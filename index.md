@@ -46,4 +46,4 @@ See how I tackle a data science project beginning to end.
 
 ---
 
-*Thanks for visiting! Feel free to explore my projects and see what I'm learning.*
+*Thanks for visiting! Feel free to explore my projects and see what I'm learning. [Click Here](https://vaoikun.github.io/about) to learn more about me!*
