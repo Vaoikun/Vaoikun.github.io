@@ -26,9 +26,9 @@ website:
             href: projects/final-project.qmd
     right:
       - icon: github
-        href: https://github.com/your-username
+        href: https://github.com/vaoikun
       - icon: linkedin
-        href: https://linkedin.com/in/your-profile
+        href: https://linkedin.com/in/vance-williams-
 
   sidebar:
     - title: "Projects"

@@ -40,7 +40,7 @@ I want to gain more skills as a data scientist in the industry for a few years a
 
 - **Email**: vancewilliams@icloud.com
 - **GitHub**: [github.com/vaoikun](https://github.com/vaoikun)
-- **LinkedIn**: [linkedin.com/in/your-profile]([https://linkedin.com/in/your-profile](https://www.linkedin.com/in/vance-williams-/))
+- **LinkedIn**: [linkedin.com/in/vance-williams-](https://www.linkedin.com/in/vance-williams-/)
 
 ---
 
