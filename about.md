@@ -3,13 +3,7 @@ title: "About Me"
 ---
 
 ## Background
-
-Write a brief introduction about yourself here. Include:
-
-- Your academic background
-- Your interest in data science
-- Your career goals
-- Any relevant experience or projects
+I am currently studying applied mathematics through ACME program at BYU. I have a great interest in machine learning and AI, wanting to become a data scientist. I have done many projects, including running tree regression on Steam reviews to predict the influence of the reviews on games. 
 
 ## Education
 
@@ -22,26 +16,23 @@ Write a brief introduction about yourself here. Include:
 | Bayesian Statistics | Real Analysis | Complex Analysis |
 
 ## Skills & Interests
-
+Completed Python for Machine Learning & Data Science Masterclass by Jose Portilla, Pierian Training
+1st Grade Japan Official Examination in Computing (Shows proficiency in IS and business computing)
+2nd Grade Japan Official Business Skills Test in Bookkeeping (Equivalent of AIPB Certified Bookkeeper)
 
 ### Technical Skills
-- **Programming**: Python, JavaScript, HTML, CSS, VBAMacro, R
+- **Programming**: Python, JavaScript, HTML, CSS, VBAMacro, R, SQL
 - **Data Analysis**: Pandas, NumPy, Scipy
 - **Visualization**: Matplotlib, Seaborn
 - **Machine Learning**: Scikit-learn
 - **Tools**: Jupyter Notebooks, Git/GitHub, AWS
 
 ### Areas of Interest
-- [Your specific interests, e.g., environmental data, healthcare analytics, finance, etc.]
-- [Other areas you're curious about]
+- AI
+- Machine Learning
 
 ## Goals
-
-Describe what you hope to achieve through your data science journey:
-
-- Short-term learning objectives
-- Long-term career aspirations
-- Types of problems you want to solve
+I want to gain more skills as a data scientist in the industry for a few years after graduation. Then, I want to start up a company to assist with education using AI. 
 
 ## Contact
 
