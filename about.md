@@ -2,7 +2,7 @@
 title: "About Me"
 ---
 
-![Headshot](Bizphoto.jpg)
+<img src="Bizphoto.jpg" alt="Description" width="300" height="200">
 
 ## Background
 I am currently studying applied mathematics through ACME program at BYU. I have a great interest in machine learning and AI, wanting to become a data scientist. I have done many projects, including running tree regression on Steam reviews to predict the influence of the reviews on games. 
