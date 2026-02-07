@@ -13,13 +13,13 @@ Write a brief introduction about yourself here. Include:
 
 ## Education
 
-- **[Your Degree]** - [University Name], [Year]
-- **Relevant Coursework**: Statistics, Data Analysis, Programming, etc.
+- **Mathematics** - [Brigham Young University](byu.edu), [2026]
+- **Relevant Coursework**: Machine Learning, Modeling Uncertainty, Differential Equations, Bayesian Statistics, Real Analysis, Complex Analysis, Probability and Inference
 
 ## Skills & Interests
 
 ### Technical Skills
-- **Programming**: Python
+- **Programming**: Python, JavaScript, 
 - **Data Analysis**: Pandas, NumPy
 - **Visualization**: Matplotlib, Seaborn
 - **Machine Learning**: Scikit-learn
