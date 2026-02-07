@@ -13,17 +13,23 @@ Write a brief introduction about yourself here. Include:
 
 ## Education
 
-- **Mathematics** - [Brigham Young University](byu.edu), [2026]
-- **Relevant Coursework**: Machine Learning, Modeling Uncertainty, Differential Equations, Bayesian Statistics, Real Analysis, Complex Analysis, Probability and Inference
+- **BS in Mathematics** - [Brigham Young University](byu.edu), [2026]
+- **Relevant Coursework**:
+
+|   |   |   |
+|---|---|---|
+| Machine Learning | Modeling Uncertainty | Differential Equations |
+| Bayesian Statistics | Real Analysis | Complex Analysis |
 
 ## Skills & Interests
 
+
 ### Technical Skills
-- **Programming**: Python, JavaScript, 
-- **Data Analysis**: Pandas, NumPy
+- **Programming**: Python, JavaScript, HTML, CSS, VBAMacro, R
+- **Data Analysis**: Pandas, NumPy, Scipy
 - **Visualization**: Matplotlib, Seaborn
 - **Machine Learning**: Scikit-learn
-- **Tools**: Jupyter Notebooks, Git/GitHub
+- **Tools**: Jupyter Notebooks, Git/GitHub, AWS
 
 ### Areas of Interest
 - [Your specific interests, e.g., environmental data, healthcare analytics, finance, etc.]
@@ -39,9 +45,9 @@ Describe what you hope to achieve through your data science journey:
 
 ## Contact
 
-- **Email**: your.email@example.com
-- **GitHub**: [github.com/your-username](https://github.com/your-username)
-- **LinkedIn**: [linkedin.com/in/your-profile](https://linkedin.com/in/your-profile)
+- **Email**: vancewilliams@icloud.com
+- **GitHub**: [github.com/vaoikun](https://github.com/vaoikun)
+- **LinkedIn**: [linkedin.com/in/your-profile]([https://linkedin.com/in/your-profile](https://www.linkedin.com/in/vance-williams-/))
 
 ---
 
