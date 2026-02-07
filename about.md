@@ -2,6 +2,8 @@
 title: "About Me"
 ---
 
+![Headshot](©2025 benwilliamsphoto_Vance Williams PFP (web resolution)-1.jpg)
+
 ## Background
 I am currently studying applied mathematics through ACME program at BYU. I have a great interest in machine learning and AI, wanting to become a data scientist. I have done many projects, including running tree regression on Steam reviews to predict the influence of the reviews on games. 
 
