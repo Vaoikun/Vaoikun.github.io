@@ -12,7 +12,22 @@ While naïve Bayes classifiers are most easily seen as applicable in cases where
 
 ## How does it work?
 Given the feature vector of a piece of data we want to classify, we want to know which of all the classes is most likely. Essentially, we want to answer the following question,
+
 $$
-\operatorname*{arg\,max}_{k \in K} P(C = k \mid \mathbf{x})
+\arg\max_{k \in K} P(C = k \mid \mathbf{x})
+$$
+
+where $$C$$ is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable. 
+
+For any $$k\in K$$,
+
+$$
+P(C = k \mid \mathbf{x}) = \frac{P(C = k)P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}
+$$
+
+By doing many lines of math, we eventually get,
+
+$$
+\arg\max_{k \in K} P(C = k \mid \mathbf{x}) = \arg\max_{k \in K} P(C = k) \Pi^n_{i=1}P(x_i \mid C = k)
 $$
 
