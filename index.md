@@ -2,7 +2,7 @@
 title: "Welcome to My Data Science Portfolio"
 ---
 
-# Hello! I'm Vance Williams
+# Hello! I'm [Vance Williams](https://vaoikun.github.io/about)
 
 Welcome to my data science portfolio! This site shows my journey learning data science and analytics. Here you'll find projects that demonstrate what I've learned and discovered.
 
