@@ -1,6 +1,6 @@
 project:
   type: website
-  output-dir: .
+  output-dir: docs
 
 website:
   title: "Your Name - Data Science Portfolio"
@@ -13,6 +13,8 @@ website:
         href: index.md
       - text: "About Me"
         href: about.md
+      - text: "Tutorial"
+        href: tutorial.md
       - text: "Projects"
         menu:
           - text: "All Projects"
@@ -45,4 +47,4 @@ format:
     code-fold: true
     code-tools: true
     css: styles.css
-    html-math-method: katex
+    html-math-method: mathjax
