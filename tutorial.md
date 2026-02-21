@@ -46,6 +46,15 @@ We will use the SMS spam dataset from
 
 After the data is cleaned by converting to lowercase and removing all punctuation, we are ready to start the classification.
 
+Data is expected to look something like,
+
+|   |   |
+|---|---|
+| ham | go until jurong point crazy available only in... |
+| spam | free entry in 2 a wkly comp to win fa cup final tkts 21st may 2005 text fa to... |
+| ham | nah i dont think he goes to usf he lives around here though... |
+| spam | freemsg hey there darling its been 3 weeks now and no word back...|
+
 ---
 
 ## Body
