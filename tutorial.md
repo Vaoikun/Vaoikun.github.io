@@ -4,11 +4,11 @@ title: "Tutorial"
 
 
 
-[Home](https://vaoikun.github.io/)
+[Home](https://vaoikun.github.io/)  <img src="Spam.jpeg" alt="Description" width="100" style="float:right; margin-left:12px;">
 
 # Naive Bayes Classifiers Tutorial
 
-## Headline　 <img src="Spam.jpeg" alt="Description" width="100" style="float:right; margin-left:12px;">
+## Headline　 
 
 Naïve Bayes classifiers are a family of machine learning classification methods that use Bayes’ theorem to probabilistically categorize data.  
 They are called naïve because they assume independence between the features. The main idea is to use Bayes’ theorem to determine the probability that a certain data point belongs in a certain class, given the features of that data. Despite what the name may suggest, the naïve Bayes classifier is not a Bayesian method, as it is based on likelihood rather than Bayesian inference.
