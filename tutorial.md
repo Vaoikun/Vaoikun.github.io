@@ -4,7 +4,7 @@ title: "Tutorial"
 
 
 
-[Home](https://vaoikun.github.io/)  <img src="Spam.jpeg" alt="Description" width="100" style="float:right; margin-left:12px;">
+[Home](https://vaoikun.github.io/)  <img src="Spam.jpeg" alt="Description" width="150" style="float:right; margin-left:12px;">
 
 # Naive Bayes Classifiers Tutorial
 
