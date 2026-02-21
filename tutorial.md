@@ -75,7 +75,9 @@ class NaiveBayesFilter(ClassifierMixin):
         self.ham_probs = {}
 ```
 
-We then create a method called fit that compute $$P(C = \text{Spam}), P(C = \text{Ham})$$ and $$P(x_i|C)$$ to fit the model,
+We then create a method called fit that compute 
+$$P(C = \text{Spam}), P(C = \text{Ham})$$ and $$P(x_i|C)$$ 
+to fit the model,
 
 ```python
     def fit(self, X, y):
