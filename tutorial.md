@@ -27,11 +27,10 @@ $$
 P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}.
 $$
 
-By doing many lines of math, we eventually get:
+After many lines of math, we get:
 
 $$
-\arg\max_{k \in K} P(C = k \mid \mathbf{x})
-=
+\arg\max_{k \in K} P(C = k \mid \mathbf{x}) = 
 \arg\max_{k \in K} P(C = k)\prod_{i=1}^{n} P(x_i \mid C = k).
 $$
 
