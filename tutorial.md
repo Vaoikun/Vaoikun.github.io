@@ -230,5 +230,5 @@ Ham incorrectly identified: np.float64(0.012417218543046357)
 ## CTA
 While naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.
 
-This is just one of many implementations of the Bayes Naive Classifier. Try implementing your own Bayes Naive Classifier in your machine and try using a different dataset!
+This is just one of many implementations of the naïve Bayes Classifier. Try implementing your own naïve Bayes Classifier in your machine and try using a different dataset!
 You can find similar datasets in websites like [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/228/sms+spam+collection) and [IEEE DataPort](https://ieee-dataport.org/documents/sms-spam-dataset) for free. 
