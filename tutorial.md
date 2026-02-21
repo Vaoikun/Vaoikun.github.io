@@ -19,24 +19,24 @@ They are called naïve because they assume independence between the features. Th
 
 Given the feature vector of a piece of data we want to classify, we want to know which of all the classes is most likely. Essentially, we want to answer the following question:
 
-```math
+$$
 \arg\max_{k \in K} P(C = k \mid \mathbf{x})
-```
+$$
 
 where $C$ is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable.
 
-For any $k \in K$,
+For any $$k \in K$$,
 
-```math
+$$
 P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}.
-```
+$$
 
 After many lines of math, we get:
 
-```math
+$$
 \arg\max_{k \in K} P(C = k \mid \mathbf{x}) = 
 \arg\max_{k \in K} P(C = k)\prod_{i=1}^{n} P(x_i \mid C = k).
-```
+$$
 
 ---
 
