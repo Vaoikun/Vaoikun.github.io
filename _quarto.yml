@@ -45,3 +45,4 @@ format:
     code-fold: true
     code-tools: true
     css: styles.css
+    html-math-method: mathjax
