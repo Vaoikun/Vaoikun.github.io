@@ -2,9 +2,7 @@
 title: "Tutorial"
 ---
 
-<div style="text-align: right;">
-<img src="Spam.jpeg" alt="Description" width="100">
-</div>
+<img src="Spam.jpeg" alt="Description" width="150">
 
 [Home](https://vaoikun.github.io/)
 
