@@ -21,9 +21,9 @@ They are called naïve because they assume independence between the features. Th
 
 Given the feature vector of a piece of data we want to classify, we want to know which of all the classes is most likely. Essentially, we want to answer the following question:
 
-$$
+$
 \arg\max_{k \in K} P(C = k \mid \mathbf{x})
-$$
+$
 
 where $C$ is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable.
 
