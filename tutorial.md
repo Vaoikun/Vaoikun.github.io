@@ -2,6 +2,10 @@
 title: "Tutorial"
 ---
 
+<div style="text-align: right;">
+<img src="Spam.jpeg" alt="Description" width="100">
+</div>
+
 # Naive Bayes Classifiers Tutorial
 
 ## Headline
