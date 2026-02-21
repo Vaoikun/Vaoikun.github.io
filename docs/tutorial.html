@@ -270,13 +270,19 @@ They are called naïve because they assume independence between the features. Th
 <section id="how-does-it-work" class="level3">
 <h3 class="anchored" data-anchor-id="how-does-it-work">How does it work?</h3>
 <p>Given the feature vector of a piece of data we want to classify, we want to know which of all the classes is most likely. Essentially, we want to answer the following question:</p>
-<pre class="math"><code>\arg\max_{k \in K} P(C = k \mid \mathbf{x})</code></pre>
+<p><span class="math display">\[
+\arg\max_{k \in K} P(C = k \mid \mathbf{x})
+\]</span></p>
 <p>where <span class="math inline">\(C\)</span> is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable.</p>
-<p>For any <span class="math inline">\(k \in K\)</span>,</p>
-<pre class="math"><code>P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}.</code></pre>
+<p>For any <span class="math display">\[k \in K\]</span>,</p>
+<p><span class="math display">\[
+P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}.
+\]</span></p>
 <p>After many lines of math, we get:</p>
-<pre class="math"><code>\arg\max_{k \in K} P(C = k \mid \mathbf{x}) = 
-\arg\max_{k \in K} P(C = k)\prod_{i=1}^{n} P(x_i \mid C = k).</code></pre>
+<p><span class="math display">\[
+\arg\max_{k \in K} P(C = k \mid \mathbf{x}) =
+\arg\max_{k \in K} P(C = k)\prod_{i=1}^{n} P(x_i \mid C = k).
+\]</span></p>
 <hr>
 </section>
 <section id="spam-problem" class="level3">
@@ -318,128 +324,128 @@ They are called naïve because they assume independence between the features. Th
 <section id="naive-bayes-class" class="level3">
 <h3 class="anchored" data-anchor-id="naive-bayes-class">Naive Bayes Class</h3>
 <p>We first create a Python class called <code>NaiveBayesFilter</code> with a constructor:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NaiveBayesFilter(ClassifierMixin):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">    A Naive Bayes Classifier that sorts messages into spam or ham.</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_prob <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_prob <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_probs <span class="op">=</span> {}</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_probs <span class="op">=</span> {}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NaiveBayesFilter(ClassifierMixin):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    A Naive Bayes Classifier that sorts messages into spam or ham.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_prob <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_prob <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_probs <span class="op">=</span> {}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_probs <span class="op">=</span> {}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We then create a method called fit that compute <span class="math display">\[P(C = \text{Spam}), P(C = \text{Ham})\]</span> and <span class="math display">\[P(x_i|C)\]</span> to fit the model,</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X, y):</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Compute the values P(C=Ham), P(C=Spam), and P(x_i|C) to fit the model.</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series): training data</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">            y (pd.Series): training labels</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        N <span class="op">=</span> <span class="bu">len</span>(y)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_prob <span class="op">=</span> <span class="bu">sum</span>(y <span class="op">==</span> <span class="st">"ham"</span>) <span class="op">/</span> N</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_prob <span class="op">=</span> <span class="bu">sum</span>(y <span class="op">==</span> <span class="st">"spam"</span>) <span class="op">/</span> N</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Tokenization</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        tokens <span class="op">=</span> X.astype(<span class="bu">str</span>).<span class="bu">str</span>.split() <span class="co"># Split at white spaces</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        spam_tokens <span class="op">=</span> [w <span class="cf">for</span> msg <span class="kw">in</span> tokens[y <span class="op">==</span> <span class="st">"spam"</span>] <span class="cf">for</span> w <span class="kw">in</span> msg]</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        ham_tokens  <span class="op">=</span> [w <span class="cf">for</span> msg <span class="kw">in</span> tokens[y <span class="op">==</span> <span class="st">"ham"</span>]  <span class="cf">for</span> w <span class="kw">in</span> msg]</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        spam_counts <span class="op">=</span> Counter(spam_tokens)</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        ham_counts  <span class="op">=</span> Counter(ham_tokens)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        vocab <span class="op">=</span> <span class="bu">set</span>(spam_counts) <span class="op">|</span> <span class="bu">set</span>(ham_counts)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        V <span class="op">=</span> <span class="bu">len</span>(vocab)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Total number of word occurrences in each class</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        total_spam_words <span class="op">=</span> <span class="bu">sum</span>(spam_counts.values())</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        total_ham_words  <span class="op">=</span> <span class="bu">sum</span>(ham_counts.values())</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_probs <span class="op">=</span> {}</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_probs <span class="op">=</span> {}</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> w <span class="kw">in</span> vocab:</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.spam_probs[w] <span class="op">=</span> (spam_counts.get(w, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (total_spam_words <span class="op">+</span> <span class="dv">2</span>)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.ham_probs[w]  <span class="op">=</span> (ham_counts.get(w, <span class="dv">0</span>)  <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (total_ham_words  <span class="op">+</span> <span class="dv">2</span>)</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X, y):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Compute the values P(C=Ham), P(C=Spam), and P(x_i|C) to fit the model.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series): training data</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">            y (pd.Series): training labels</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        N <span class="op">=</span> <span class="bu">len</span>(y)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_prob <span class="op">=</span> <span class="bu">sum</span>(y <span class="op">==</span> <span class="st">"ham"</span>) <span class="op">/</span> N</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_prob <span class="op">=</span> <span class="bu">sum</span>(y <span class="op">==</span> <span class="st">"spam"</span>) <span class="op">/</span> N</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Tokenization</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        tokens <span class="op">=</span> X.astype(<span class="bu">str</span>).<span class="bu">str</span>.split() <span class="co"># Split at white spaces</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        spam_tokens <span class="op">=</span> [w <span class="cf">for</span> msg <span class="kw">in</span> tokens[y <span class="op">==</span> <span class="st">"spam"</span>] <span class="cf">for</span> w <span class="kw">in</span> msg]</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        ham_tokens  <span class="op">=</span> [w <span class="cf">for</span> msg <span class="kw">in</span> tokens[y <span class="op">==</span> <span class="st">"ham"</span>]  <span class="cf">for</span> w <span class="kw">in</span> msg]</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        spam_counts <span class="op">=</span> Counter(spam_tokens)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        ham_counts  <span class="op">=</span> Counter(ham_tokens)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        vocab <span class="op">=</span> <span class="bu">set</span>(spam_counts) <span class="op">|</span> <span class="bu">set</span>(ham_counts)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        V <span class="op">=</span> <span class="bu">len</span>(vocab)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Total number of word occurrences in each class</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        total_spam_words <span class="op">=</span> <span class="bu">sum</span>(spam_counts.values())</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        total_ham_words  <span class="op">=</span> <span class="bu">sum</span>(ham_counts.values())</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_probs <span class="op">=</span> {}</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_probs <span class="op">=</span> {}</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> w <span class="kw">in</span> vocab:</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.spam_probs[w] <span class="op">=</span> (spam_counts.get(w, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (total_spam_words <span class="op">+</span> <span class="dv">2</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.ham_probs[w]  <span class="op">=</span> (ham_counts.get(w, <span class="dv">0</span>)  <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (total_ham_words  <span class="op">+</span> <span class="dv">2</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can see that <code>self.ham_probs['out']</code> will give the value for <span class="math display">\[P(x_i = '\text{out}' \mid C = \text{ham})\]</span>,</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example model trained on the first 300 data points</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>nb <span class="op">=</span> NaiveBayesFilter()</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>nb.fit(X[:<span class="dv">300</span>], y[:<span class="dv">300</span>])</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check spam and ham probabilities of 'out'</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>nb.ham_probs[<span class="st">'out'</span>]</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fl">0.003147128245476003</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>nb.spam_probs[<span class="st">'out'</span>]</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fl">0.004166666666666667</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example model trained on the first 300 data points</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>nb <span class="op">=</span> NaiveBayesFilter()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>nb.fit(X[:<span class="dv">300</span>], y[:<span class="dv">300</span>])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check spam and ham probabilities of 'out'</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>nb.ham_probs[<span class="st">'out'</span>]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fl">0.003147128245476003</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>nb.spam_probs[<span class="st">'out'</span>]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fl">0.004166666666666667</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now that we have trained our model, we can predict the class of a message by calculating</p>
 <p><span class="math display">\[
 P(C = k) \Pi^n_{i=1} P(x_i \mid C=k)
 \]</span></p>
 <p>for each class <span class="math display">\[k\]</span> . Directly computing this probability as a product can lead to an issue: underflow. If <span class="math display">\[\mathbf{x}\]</span> is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict_proba(<span class="va">self</span>, X):</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Find ln(P(C=k,x)) for each x in X and for each class.</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series)(N,): messages to classify</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">        Return:</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">            (ndarray)(N,2): Log probability each message is ham or spam.</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">                Column 0 is ham, column 1 is spam.</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        msgs <span class="op">=</span> X.astype(<span class="bu">str</span>).values</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        N <span class="op">=</span> <span class="bu">len</span>(msgs)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># log priors</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        log_ham_prior <span class="op">=</span> np.log(<span class="va">self</span>.ham_prob)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        log_spam_prior <span class="op">=</span> np.log(<span class="va">self</span>.spam_prob)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        log_unseen <span class="op">=</span> np.log(<span class="fl">0.5</span>)</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> np.zeros((N, <span class="dv">2</span>), dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, msg <span class="kw">in</span> <span class="bu">enumerate</span>(msgs):</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>            log_ham <span class="op">=</span> log_ham_prior</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            log_spam <span class="op">=</span> log_spam_prior</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>            <span class="co"># tokenization</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> w <span class="kw">in</span> msg.split():</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                log_ham <span class="op">+=</span> np.log(<span class="va">self</span>.ham_probs.get(w, <span class="fl">0.5</span>))</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>                log_spam <span class="op">+=</span> np.log(<span class="va">self</span>.spam_probs.get(w, <span class="fl">0.5</span>))</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>            out[i, <span class="dv">0</span>] <span class="op">=</span> log_ham</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>            out[i, <span class="dv">1</span>] <span class="op">=</span> log_spam</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> out</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict_proba(<span class="va">self</span>, X):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Find ln(P(C=k,x)) for each x in X and for each class.</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series)(N,): messages to classify</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">        Return:</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">            (ndarray)(N,2): Log probability each message is ham or spam.</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">                Column 0 is ham, column 1 is spam.</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        msgs <span class="op">=</span> X.astype(<span class="bu">str</span>).values</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        N <span class="op">=</span> <span class="bu">len</span>(msgs)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># log priors</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        log_ham_prior <span class="op">=</span> np.log(<span class="va">self</span>.ham_prob)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        log_spam_prior <span class="op">=</span> np.log(<span class="va">self</span>.spam_prob)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        log_unseen <span class="op">=</span> np.log(<span class="fl">0.5</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> np.zeros((N, <span class="dv">2</span>), dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, msg <span class="kw">in</span> <span class="bu">enumerate</span>(msgs):</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>            log_ham <span class="op">=</span> log_ham_prior</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>            log_spam <span class="op">=</span> log_spam_prior</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>            <span class="co"># tokenization</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> w <span class="kw">in</span> msg.split():</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                log_ham <span class="op">+=</span> np.log(<span class="va">self</span>.ham_probs.get(w, <span class="fl">0.5</span>))</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                log_spam <span class="op">+=</span> np.log(<span class="va">self</span>.spam_probs.get(w, <span class="fl">0.5</span>))</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>            out[i, <span class="dv">0</span>] <span class="op">=</span> log_ham</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>            out[i, <span class="dv">1</span>] <span class="op">=</span> log_spam</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> out</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This will produce something like,</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>nb.predict_proba(X[<span class="dv">800</span>:<span class="dv">805</span>])</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>array([[ <span class="op">-</span><span class="fl">30.8951931</span> ,  <span class="op">-</span><span class="fl">35.42406687</span>],</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">108.85464069</span>,  <span class="op">-</span><span class="fl">91.70332157</span>],</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>       [ <span class="op">-</span><span class="fl">74.65014875</span>,  <span class="op">-</span><span class="fl">88.71184709</span>],</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">164.94297917</span>, <span class="op">-</span><span class="fl">133.8497405</span> ],</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">127.17743715</span>, <span class="op">-</span><span class="fl">101.32098062</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>nb.predict_proba(X[<span class="dv">800</span>:<span class="dv">805</span>])</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>array([[ <span class="op">-</span><span class="fl">30.8951931</span> ,  <span class="op">-</span><span class="fl">35.42406687</span>],</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">108.85464069</span>,  <span class="op">-</span><span class="fl">91.70332157</span>],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>       [ <span class="op">-</span><span class="fl">74.65014875</span>,  <span class="op">-</span><span class="fl">88.71184709</span>],</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">164.94297917</span>, <span class="op">-</span><span class="fl">133.8497405</span> ],</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">127.17743715</span>, <span class="op">-</span><span class="fl">101.32098062</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Finally, we will implement the method <code>predict()</code> that makes predicted classification,</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict(<span class="va">self</span>, X):</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Predict the labels of each row in X, using self.predict_proba().</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">        The label will be a string that is either 'spam' or 'ham'.</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series)(N,): messages to classify</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">        Return:</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">            (ndarray)(N,): label for each message</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        logj <span class="op">=</span> <span class="va">self</span>.predict_proba(X)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        preds <span class="op">=</span> np.where(logj[:, <span class="dv">1</span>] <span class="op">&gt;</span> logj[:, <span class="dv">0</span>], <span class="st">"spam"</span>, <span class="st">"ham"</span>)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> preds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict(<span class="va">self</span>, X):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Predict the labels of each row in X, using self.predict_proba().</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">        The label will be a string that is either 'spam' or 'ham'.</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series)(N,): messages to classify</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">        Return:</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">            (ndarray)(N,): label for each message</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        logj <span class="op">=</span> <span class="va">self</span>.predict_proba(X)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        preds <span class="op">=</span> np.where(logj[:, <span class="dv">1</span>] <span class="op">&gt;</span> logj[:, <span class="dv">0</span>], <span class="st">"spam"</span>, <span class="st">"ham"</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> preds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can now test our spam filter. We will use the sklearn’s train_test_split function with the default parameters to split the data into training and test sets. Train a NaiveBayesFilter on the train set, and have it predict the labels of each message in the test set.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.Message</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df.Label</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>nb <span class="op">=</span> NaiveBayesFilter()</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>nb.fit(X_train, y_train)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> nb.predict(X_test)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># spam correctly identified</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>spam_mask <span class="op">=</span> (y_test.to_numpy() <span class="op">==</span> <span class="st">"spam"</span>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>spam_correct <span class="op">=</span> np.mean(y_pred[spam_mask] <span class="op">==</span> <span class="st">"spam"</span>)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ham incorrectly identified</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>ham_mask <span class="op">=</span> (y_test.to_numpy() <span class="op">==</span> <span class="st">"ham"</span>)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>ham_incorrect <span class="op">=</span> np.mean(y_pred[ham_mask] <span class="op">==</span> <span class="st">"spam"</span>)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Spam correctly identified:"</span>, spam_correct)</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ham incorrectly identified:"</span>, ham_incorrect)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.Message</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df.Label</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>nb <span class="op">=</span> NaiveBayesFilter()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>nb.fit(X_train, y_train)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> nb.predict(X_test)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># spam correctly identified</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>spam_mask <span class="op">=</span> (y_test.to_numpy() <span class="op">==</span> <span class="st">"spam"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>spam_correct <span class="op">=</span> np.mean(y_pred[spam_mask] <span class="op">==</span> <span class="st">"spam"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ham incorrectly identified</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ham_mask <span class="op">=</span> (y_test.to_numpy() <span class="op">==</span> <span class="st">"ham"</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>ham_incorrect <span class="op">=</span> np.mean(y_pred[ham_mask] <span class="op">==</span> <span class="st">"spam"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Spam correctly identified:"</span>, spam_correct)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ham incorrectly identified:"</span>, ham_incorrect)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This will yield,</p>
 <pre><code>Spam correctly identified: np.float64(0.9513513513513514)
 Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
@@ -908,240 +914,240 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Tutorial"</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Home</span><span class="co">](https://vaoikun.github.io/)</span>  <span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"Spam.jpeg"</span><span class="ot"> alt</span><span class="op">=</span><span class="st">"Description"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"150"</span><span class="ot"> style</span><span class="op">=</span><span class="st">"float:right; margin-left:12px;"</span><span class="dt">&gt;</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu"># Naive Bayes Classifiers Tutorial</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Headline　 </span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>Naïve Bayes classifiers are a family of machine learning classification methods that use Bayes’ theorem to probabilistically categorize data.  </span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>They are called naïve because they assume independence between the features. The main idea is to use Bayes’ theorem to determine the probability that a certain data point belongs in a certain class, given the features of that data. Despite what the name may suggest, the naïve Bayes classifier is not a Bayesian method, as it is based on likelihood rather than Bayesian inference.</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="fu">### How does it work?</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>Given the feature vector of a piece of data we want to classify, we want to know which of all the classes is most likely. Essentially, we want to answer the following question:</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="in">```math</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="in">\arg\max_{k \in K} P(C = k \mid \mathbf{x})</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>where $C$ is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable.</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>For any $k \in K$,</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="in">```math</span></span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="in">P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}.</span></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>After many lines of math, we get:</span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="in">```math</span></span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="in">\arg\max_{k \in K} P(C = k \mid \mathbf{x}) = </span></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="in">\arg\max_{k \in K} P(C = k)\prod_{i=1}^{n} P(x_i \mid C = k).</span></span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="fu">### Spam Problem</span></span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>A spam filter is just a special case of a classifier with two classes: spam and not spam (often called *ham*). Spam filtering is a situation where naïve Bayes classifiers perform relatively well.</span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>We will use the SMS spam dataset from  </span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Kaggle SMS Spam Collection</span><span class="co">](https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset)</span>.</span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>After the data is cleaned by converting to lowercase and removing all punctuation, we are ready to start the classification.</span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>Data is expected to look something like,</span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>   <span class="pp">|</span>   <span class="pp">|</span></span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> ham <span class="pp">|</span> go until jurong point crazy available only in... <span class="pp">|</span></span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> spam <span class="pp">|</span> free entry in 2 a wkly comp to win fa cup final tkts 21st may 2005 text fa to... <span class="pp">|</span></span>
-<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> ham <span class="pp">|</span> nah i dont think he goes to usf he lives around here though... <span class="pp">|</span></span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> spam <span class="pp">|</span> freemsg hey there darling its been 3 weeks now and no word back...<span class="pp">|</span></span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## Body</span></span>
-<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a><span class="fu">### Naive Bayes Class</span></span>
-<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>We first create a Python class called <span class="in">`NaiveBayesFilter`</span> with a constructor:</span>
-<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NaiveBayesFilter(ClassifierMixin):</span>
-<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
-<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a><span class="co">    A Naive Bayes Classifier that sorts messages into spam or ham.</span></span>
-<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
-<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
-<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_prob <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_prob <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_probs <span class="op">=</span> {}</span>
-<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_probs <span class="op">=</span> {}</span>
-<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>We then create a method called fit that compute </span>
-<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>$$P(C = \text{Spam}), P(C = \text{Ham})$$ and $$P(x_i|C)$$ </span>
-<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>to fit the model,</span>
-<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X, y):</span>
-<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
-<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a><span class="co">        Compute the values P(C=Ham), P(C=Spam), and P(x_i|C) to fit the model.</span></span>
-<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
-<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series): training data</span></span>
-<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a><span class="co">            y (pd.Series): training labels</span></span>
-<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
-<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>        N <span class="op">=</span> <span class="bu">len</span>(y)</span>
-<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_prob <span class="op">=</span> <span class="bu">sum</span>(y <span class="op">==</span> <span class="st">"ham"</span>) <span class="op">/</span> N</span>
-<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_prob <span class="op">=</span> <span class="bu">sum</span>(y <span class="op">==</span> <span class="st">"spam"</span>) <span class="op">/</span> N</span>
-<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Tokenization</span></span>
-<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>        tokens <span class="op">=</span> X.astype(<span class="bu">str</span>).<span class="bu">str</span>.split() <span class="co"># Split at white spaces</span></span>
-<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>        spam_tokens <span class="op">=</span> [w <span class="cf">for</span> msg <span class="kw">in</span> tokens[y <span class="op">==</span> <span class="st">"spam"</span>] <span class="cf">for</span> w <span class="kw">in</span> msg]</span>
-<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>        ham_tokens  <span class="op">=</span> [w <span class="cf">for</span> msg <span class="kw">in</span> tokens[y <span class="op">==</span> <span class="st">"ham"</span>]  <span class="cf">for</span> w <span class="kw">in</span> msg]</span>
-<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a>        spam_counts <span class="op">=</span> Counter(spam_tokens)</span>
-<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a>        ham_counts  <span class="op">=</span> Counter(ham_tokens)</span>
-<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a>        vocab <span class="op">=</span> <span class="bu">set</span>(spam_counts) <span class="op">|</span> <span class="bu">set</span>(ham_counts)</span>
-<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a>        V <span class="op">=</span> <span class="bu">len</span>(vocab)</span>
-<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Total number of word occurrences in each class</span></span>
-<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a>        total_spam_words <span class="op">=</span> <span class="bu">sum</span>(spam_counts.values())</span>
-<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a>        total_ham_words  <span class="op">=</span> <span class="bu">sum</span>(ham_counts.values())</span>
-<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_probs <span class="op">=</span> {}</span>
-<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_probs <span class="op">=</span> {}</span>
-<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> w <span class="kw">in</span> vocab:</span>
-<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.spam_probs[w] <span class="op">=</span> (spam_counts.get(w, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (total_spam_words <span class="op">+</span> <span class="dv">2</span>)</span>
-<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.ham_probs[w]  <span class="op">=</span> (ham_counts.get(w, <span class="dv">0</span>)  <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (total_ham_words  <span class="op">+</span> <span class="dv">2</span>)</span>
-<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
-<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>We can see that ```self.ham_probs<span class="co">[</span><span class="ot">'out'</span><span class="co">]</span>``` will give the value for $$P(x_i = '\text{out}' \mid C = \text{ham})$$,</span>
-<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a><span class="co"># Example model trained on the first 300 data points</span></span>
-<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a>nb <span class="op">=</span> NaiveBayesFilter()</span>
-<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a>nb.fit(X[:<span class="dv">300</span>], y[:<span class="dv">300</span>])</span>
-<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a><span class="co"># Check spam and ham probabilities of 'out'</span></span>
-<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>nb.ham_probs[<span class="st">'out'</span>]</span>
-<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a><span class="fl">0.003147128245476003</span></span>
-<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a>nb.spam_probs[<span class="st">'out'</span>]</span>
-<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a><span class="fl">0.004166666666666667</span></span>
-<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a>Now that we have trained our model, we can predict the class of a message by calculating</span>
-<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a>P(C = k) \Pi^n_{i=1} P(x_i \mid C=k) </span>
-<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>for each class $$k$$ .</span>
-<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>Directly computing this probability as a product can lead to an issue: underflow. If $$\mathbf{x}$$ is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability. </span>
-<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict_proba(<span class="va">self</span>, X):</span>
-<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
-<span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a><span class="co">        Find ln(P(C=k,x)) for each x in X and for each class.</span></span>
-<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
-<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series)(N,): messages to classify</span></span>
-<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a><span class="co">        Return:</span></span>
-<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a><span class="co">            (ndarray)(N,2): Log probability each message is ham or spam.</span></span>
-<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a><span class="co">                Column 0 is ham, column 1 is spam.</span></span>
-<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
-<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>        msgs <span class="op">=</span> X.astype(<span class="bu">str</span>).values</span>
-<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a>        N <span class="op">=</span> <span class="bu">len</span>(msgs)</span>
-<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>        <span class="co"># log priors</span></span>
-<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>        log_ham_prior <span class="op">=</span> np.log(<span class="va">self</span>.ham_prob)</span>
-<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a>        log_spam_prior <span class="op">=</span> np.log(<span class="va">self</span>.spam_prob)</span>
-<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a>        log_unseen <span class="op">=</span> np.log(<span class="fl">0.5</span>)</span>
-<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> np.zeros((N, <span class="dv">2</span>), dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, msg <span class="kw">in</span> <span class="bu">enumerate</span>(msgs):</span>
-<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>            log_ham <span class="op">=</span> log_ham_prior</span>
-<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a>            log_spam <span class="op">=</span> log_spam_prior</span>
-<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a>            <span class="co"># tokenization</span></span>
-<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> w <span class="kw">in</span> msg.split():</span>
-<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a>                log_ham <span class="op">+=</span> np.log(<span class="va">self</span>.ham_probs.get(w, <span class="fl">0.5</span>))</span>
-<span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a>                log_spam <span class="op">+=</span> np.log(<span class="va">self</span>.spam_probs.get(w, <span class="fl">0.5</span>))</span>
-<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a>            out[i, <span class="dv">0</span>] <span class="op">=</span> log_ham</span>
-<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a>            out[i, <span class="dv">1</span>] <span class="op">=</span> log_spam</span>
-<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> out</span>
-<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a>This will produce something like,</span>
-<span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a>nb.predict_proba(X[<span class="dv">800</span>:<span class="dv">805</span>])</span>
-<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a>array([[ <span class="op">-</span><span class="fl">30.8951931</span> ,  <span class="op">-</span><span class="fl">35.42406687</span>],</span>
-<span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">108.85464069</span>,  <span class="op">-</span><span class="fl">91.70332157</span>],</span>
-<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a>       [ <span class="op">-</span><span class="fl">74.65014875</span>,  <span class="op">-</span><span class="fl">88.71184709</span>],</span>
-<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">164.94297917</span>, <span class="op">-</span><span class="fl">133.8497405</span> ],</span>
-<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">127.17743715</span>, <span class="op">-</span><span class="fl">101.32098062</span>]])</span>
-<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a>Finally, we will implement the method ```predict()``` that makes predicted classification,</span>
-<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict(<span class="va">self</span>, X):</span>
-<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
-<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a><span class="co">        Predict the labels of each row in X, using self.predict_proba().</span></span>
-<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a><span class="co">        The label will be a string that is either 'spam' or 'ham'.</span></span>
-<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
-<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series)(N,): messages to classify</span></span>
-<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a><span class="co">        Return:</span></span>
-<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a><span class="co">            (ndarray)(N,): label for each message</span></span>
-<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
-<span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a>        logj <span class="op">=</span> <span class="va">self</span>.predict_proba(X)</span>
-<span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a>        preds <span class="op">=</span> np.where(logj[:, <span class="dv">1</span>] <span class="op">&gt;</span> logj[:, <span class="dv">0</span>], <span class="st">"spam"</span>, <span class="st">"ham"</span>)</span>
-<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> preds</span>
-<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a>We can now test our spam filter. We will use the sklearn’s train_test_split function with the default parameters to split the data into training and test sets. Train a NaiveBayesFilter on the train set, and have it predict the labels of each message in the test set. </span>
-<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.Message</span>
-<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df.Label</span>
-<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a>nb <span class="op">=</span> NaiveBayesFilter()</span>
-<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a>nb.fit(X_train, y_train)</span>
-<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> nb.predict(X_test)</span>
-<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a><span class="co"># spam correctly identified</span></span>
-<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a>spam_mask <span class="op">=</span> (y_test.to_numpy() <span class="op">==</span> <span class="st">"spam"</span>)</span>
-<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a>spam_correct <span class="op">=</span> np.mean(y_pred[spam_mask] <span class="op">==</span> <span class="st">"spam"</span>)</span>
-<span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a><span class="co"># ham incorrectly identified</span></span>
-<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a>ham_mask <span class="op">=</span> (y_test.to_numpy() <span class="op">==</span> <span class="st">"ham"</span>)</span>
-<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a>ham_incorrect <span class="op">=</span> np.mean(y_pred[ham_mask] <span class="op">==</span> <span class="st">"spam"</span>)</span>
-<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Spam correctly identified:"</span>, spam_correct)</span>
-<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ham incorrectly identified:"</span>, ham_incorrect)</span>
-<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a>This will yield,</span>
-<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a><span class="in">Spam correctly identified: np.float64(0.9513513513513514)</span></span>
-<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a><span class="in">Ham incorrectly identified: np.float64(0.012417218543046357)</span></span>
-<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a><span class="fu">## CTA</span></span>
-<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a>While naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.</span>
-<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a>This is just one of many implementations of the Bayes Naive Classifier. Try implementing your own Bayes Naive Classifier in your machine and try using a different dataset!</span>
-<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a>You can find similar datasets in websites like <span class="co">[</span><span class="ot">UCI Machine Learning Repository</span><span class="co">](https://archive.ics.uci.edu/dataset/228/sms+spam+collection)</span> and <span class="co">[</span><span class="ot">IEEE DataPort</span><span class="co">](https://ieee-dataport.org/documents/sms-spam-dataset)</span> for free. </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Tutorial"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Home</span><span class="co">](https://vaoikun.github.io/)</span>  <span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"Spam.jpeg"</span><span class="ot"> alt</span><span class="op">=</span><span class="st">"Description"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"150"</span><span class="ot"> style</span><span class="op">=</span><span class="st">"float:right; margin-left:12px;"</span><span class="dt">&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu"># Naive Bayes Classifiers Tutorial</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Headline　 </span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>Naïve Bayes classifiers are a family of machine learning classification methods that use Bayes’ theorem to probabilistically categorize data.  </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>They are called naïve because they assume independence between the features. The main idea is to use Bayes’ theorem to determine the probability that a certain data point belongs in a certain class, given the features of that data. Despite what the name may suggest, the naïve Bayes classifier is not a Bayesian method, as it is based on likelihood rather than Bayesian inference.</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">### How does it work?</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>Given the feature vector of a piece of data we want to classify, we want to know which of all the classes is most likely. Essentially, we want to answer the following question:</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>\arg\max_{k \in K} P(C = k \mid \mathbf{x})</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>where $C$ is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable.</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>For any $$k \in K$$,</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}.</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>After many lines of math, we get:</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>\arg\max_{k \in K} P(C = k \mid \mathbf{x}) = </span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>\arg\max_{k \in K} P(C = k)\prod_{i=1}^{n} P(x_i \mid C = k).</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="fu">### Spam Problem</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>A spam filter is just a special case of a classifier with two classes: spam and not spam (often called *ham*). Spam filtering is a situation where naïve Bayes classifiers perform relatively well.</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>We will use the SMS spam dataset from  </span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Kaggle SMS Spam Collection</span><span class="co">](https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset)</span>.</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>After the data is cleaned by converting to lowercase and removing all punctuation, we are ready to start the classification.</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>Data is expected to look something like,</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span>   <span class="pp">|</span>   <span class="pp">|</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> ham <span class="pp">|</span> go until jurong point crazy available only in... <span class="pp">|</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> spam <span class="pp">|</span> free entry in 2 a wkly comp to win fa cup final tkts 21st may 2005 text fa to... <span class="pp">|</span></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> ham <span class="pp">|</span> nah i dont think he goes to usf he lives around here though... <span class="pp">|</span></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> spam <span class="pp">|</span> freemsg hey there darling its been 3 weeks now and no word back...<span class="pp">|</span></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## Body</span></span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a><span class="fu">### Naive Bayes Class</span></span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>We first create a Python class called <span class="in">`NaiveBayesFilter`</span> with a constructor:</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NaiveBayesFilter(ClassifierMixin):</span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a><span class="co">    A Naive Bayes Classifier that sorts messages into spam or ham.</span></span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_prob <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_prob <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_probs <span class="op">=</span> {}</span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_probs <span class="op">=</span> {}</span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>We then create a method called fit that compute </span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>$$P(C = \text{Spam}), P(C = \text{Ham})$$ and $$P(x_i|C)$$ </span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a>to fit the model,</span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X, y):</span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a><span class="co">        Compute the values P(C=Ham), P(C=Spam), and P(x_i|C) to fit the model.</span></span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series): training data</span></span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a><span class="co">            y (pd.Series): training labels</span></span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>        N <span class="op">=</span> <span class="bu">len</span>(y)</span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_prob <span class="op">=</span> <span class="bu">sum</span>(y <span class="op">==</span> <span class="st">"ham"</span>) <span class="op">/</span> N</span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_prob <span class="op">=</span> <span class="bu">sum</span>(y <span class="op">==</span> <span class="st">"spam"</span>) <span class="op">/</span> N</span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Tokenization</span></span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a>        tokens <span class="op">=</span> X.astype(<span class="bu">str</span>).<span class="bu">str</span>.split() <span class="co"># Split at white spaces</span></span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a>        spam_tokens <span class="op">=</span> [w <span class="cf">for</span> msg <span class="kw">in</span> tokens[y <span class="op">==</span> <span class="st">"spam"</span>] <span class="cf">for</span> w <span class="kw">in</span> msg]</span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a>        ham_tokens  <span class="op">=</span> [w <span class="cf">for</span> msg <span class="kw">in</span> tokens[y <span class="op">==</span> <span class="st">"ham"</span>]  <span class="cf">for</span> w <span class="kw">in</span> msg]</span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a>        spam_counts <span class="op">=</span> Counter(spam_tokens)</span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a>        ham_counts  <span class="op">=</span> Counter(ham_tokens)</span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a>        vocab <span class="op">=</span> <span class="bu">set</span>(spam_counts) <span class="op">|</span> <span class="bu">set</span>(ham_counts)</span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a>        V <span class="op">=</span> <span class="bu">len</span>(vocab)</span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Total number of word occurrences in each class</span></span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>        total_spam_words <span class="op">=</span> <span class="bu">sum</span>(spam_counts.values())</span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a>        total_ham_words  <span class="op">=</span> <span class="bu">sum</span>(ham_counts.values())</span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_probs <span class="op">=</span> {}</span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_probs <span class="op">=</span> {}</span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> w <span class="kw">in</span> vocab:</span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.spam_probs[w] <span class="op">=</span> (spam_counts.get(w, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (total_spam_words <span class="op">+</span> <span class="dv">2</span>)</span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.ham_probs[w]  <span class="op">=</span> (ham_counts.get(w, <span class="dv">0</span>)  <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (total_ham_words  <span class="op">+</span> <span class="dv">2</span>)</span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>We can see that ```self.ham_probs<span class="co">[</span><span class="ot">'out'</span><span class="co">]</span>``` will give the value for $$P(x_i = '\text{out}' \mid C = \text{ham})$$,</span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a><span class="co"># Example model trained on the first 300 data points</span></span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a>nb <span class="op">=</span> NaiveBayesFilter()</span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a>nb.fit(X[:<span class="dv">300</span>], y[:<span class="dv">300</span>])</span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a><span class="co"># Check spam and ham probabilities of 'out'</span></span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a>nb.ham_probs[<span class="st">'out'</span>]</span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a><span class="fl">0.003147128245476003</span></span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a>nb.spam_probs[<span class="st">'out'</span>]</span>
+<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a><span class="fl">0.004166666666666667</span></span>
+<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a>Now that we have trained our model, we can predict the class of a message by calculating</span>
+<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a>P(C = k) \Pi^n_{i=1} P(x_i \mid C=k) </span>
+<span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a>for each class $$k$$ .</span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a>Directly computing this probability as a product can lead to an issue: underflow. If $$\mathbf{x}$$ is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability. </span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict_proba(<span class="va">self</span>, X):</span>
+<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
+<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a><span class="co">        Find ln(P(C=k,x)) for each x in X and for each class.</span></span>
+<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
+<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series)(N,): messages to classify</span></span>
+<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a><span class="co">        Return:</span></span>
+<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a><span class="co">            (ndarray)(N,2): Log probability each message is ham or spam.</span></span>
+<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a><span class="co">                Column 0 is ham, column 1 is spam.</span></span>
+<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
+<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a>        msgs <span class="op">=</span> X.astype(<span class="bu">str</span>).values</span>
+<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a>        N <span class="op">=</span> <span class="bu">len</span>(msgs)</span>
+<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a>        <span class="co"># log priors</span></span>
+<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a>        log_ham_prior <span class="op">=</span> np.log(<span class="va">self</span>.ham_prob)</span>
+<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a>        log_spam_prior <span class="op">=</span> np.log(<span class="va">self</span>.spam_prob)</span>
+<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a>        log_unseen <span class="op">=</span> np.log(<span class="fl">0.5</span>)</span>
+<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> np.zeros((N, <span class="dv">2</span>), dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, msg <span class="kw">in</span> <span class="bu">enumerate</span>(msgs):</span>
+<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a>            log_ham <span class="op">=</span> log_ham_prior</span>
+<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a>            log_spam <span class="op">=</span> log_spam_prior</span>
+<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a>            <span class="co"># tokenization</span></span>
+<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> w <span class="kw">in</span> msg.split():</span>
+<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a>                log_ham <span class="op">+=</span> np.log(<span class="va">self</span>.ham_probs.get(w, <span class="fl">0.5</span>))</span>
+<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a>                log_spam <span class="op">+=</span> np.log(<span class="va">self</span>.spam_probs.get(w, <span class="fl">0.5</span>))</span>
+<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a>            out[i, <span class="dv">0</span>] <span class="op">=</span> log_ham</span>
+<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a>            out[i, <span class="dv">1</span>] <span class="op">=</span> log_spam</span>
+<span id="cb9-170"><a href="#cb9-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-171"><a href="#cb9-171" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> out</span>
+<span id="cb9-172"><a href="#cb9-172" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-173"><a href="#cb9-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-174"><a href="#cb9-174" aria-hidden="true" tabindex="-1"></a>This will produce something like,</span>
+<span id="cb9-175"><a href="#cb9-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-176"><a href="#cb9-176" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb9-177"><a href="#cb9-177" aria-hidden="true" tabindex="-1"></a>nb.predict_proba(X[<span class="dv">800</span>:<span class="dv">805</span>])</span>
+<span id="cb9-178"><a href="#cb9-178" aria-hidden="true" tabindex="-1"></a>array([[ <span class="op">-</span><span class="fl">30.8951931</span> ,  <span class="op">-</span><span class="fl">35.42406687</span>],</span>
+<span id="cb9-179"><a href="#cb9-179" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">108.85464069</span>,  <span class="op">-</span><span class="fl">91.70332157</span>],</span>
+<span id="cb9-180"><a href="#cb9-180" aria-hidden="true" tabindex="-1"></a>       [ <span class="op">-</span><span class="fl">74.65014875</span>,  <span class="op">-</span><span class="fl">88.71184709</span>],</span>
+<span id="cb9-181"><a href="#cb9-181" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">164.94297917</span>, <span class="op">-</span><span class="fl">133.8497405</span> ],</span>
+<span id="cb9-182"><a href="#cb9-182" aria-hidden="true" tabindex="-1"></a>       [<span class="op">-</span><span class="fl">127.17743715</span>, <span class="op">-</span><span class="fl">101.32098062</span>]])</span>
+<span id="cb9-183"><a href="#cb9-183" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-184"><a href="#cb9-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-185"><a href="#cb9-185" aria-hidden="true" tabindex="-1"></a>Finally, we will implement the method ```predict()``` that makes predicted classification,</span>
+<span id="cb9-186"><a href="#cb9-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-187"><a href="#cb9-187" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb9-188"><a href="#cb9-188" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict(<span class="va">self</span>, X):</span>
+<span id="cb9-189"><a href="#cb9-189" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
+<span id="cb9-190"><a href="#cb9-190" aria-hidden="true" tabindex="-1"></a><span class="co">        Predict the labels of each row in X, using self.predict_proba().</span></span>
+<span id="cb9-191"><a href="#cb9-191" aria-hidden="true" tabindex="-1"></a><span class="co">        The label will be a string that is either 'spam' or 'ham'.</span></span>
+<span id="cb9-192"><a href="#cb9-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-193"><a href="#cb9-193" aria-hidden="true" tabindex="-1"></a><span class="co">        Parameters:</span></span>
+<span id="cb9-194"><a href="#cb9-194" aria-hidden="true" tabindex="-1"></a><span class="co">            X (pd.Series)(N,): messages to classify</span></span>
+<span id="cb9-195"><a href="#cb9-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-196"><a href="#cb9-196" aria-hidden="true" tabindex="-1"></a><span class="co">        Return:</span></span>
+<span id="cb9-197"><a href="#cb9-197" aria-hidden="true" tabindex="-1"></a><span class="co">            (ndarray)(N,): label for each message</span></span>
+<span id="cb9-198"><a href="#cb9-198" aria-hidden="true" tabindex="-1"></a><span class="co">        '''</span></span>
+<span id="cb9-199"><a href="#cb9-199" aria-hidden="true" tabindex="-1"></a>        logj <span class="op">=</span> <span class="va">self</span>.predict_proba(X)</span>
+<span id="cb9-200"><a href="#cb9-200" aria-hidden="true" tabindex="-1"></a>        preds <span class="op">=</span> np.where(logj[:, <span class="dv">1</span>] <span class="op">&gt;</span> logj[:, <span class="dv">0</span>], <span class="st">"spam"</span>, <span class="st">"ham"</span>)</span>
+<span id="cb9-201"><a href="#cb9-201" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> preds</span>
+<span id="cb9-202"><a href="#cb9-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-203"><a href="#cb9-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-204"><a href="#cb9-204" aria-hidden="true" tabindex="-1"></a>We can now test our spam filter. We will use the sklearn’s train_test_split function with the default parameters to split the data into training and test sets. Train a NaiveBayesFilter on the train set, and have it predict the labels of each message in the test set. </span>
+<span id="cb9-205"><a href="#cb9-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-206"><a href="#cb9-206" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb9-207"><a href="#cb9-207" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.Message</span>
+<span id="cb9-208"><a href="#cb9-208" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df.Label</span>
+<span id="cb9-209"><a href="#cb9-209" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb9-210"><a href="#cb9-210" aria-hidden="true" tabindex="-1"></a>nb <span class="op">=</span> NaiveBayesFilter()</span>
+<span id="cb9-211"><a href="#cb9-211" aria-hidden="true" tabindex="-1"></a>nb.fit(X_train, y_train)</span>
+<span id="cb9-212"><a href="#cb9-212" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> nb.predict(X_test)</span>
+<span id="cb9-213"><a href="#cb9-213" aria-hidden="true" tabindex="-1"></a><span class="co"># spam correctly identified</span></span>
+<span id="cb9-214"><a href="#cb9-214" aria-hidden="true" tabindex="-1"></a>spam_mask <span class="op">=</span> (y_test.to_numpy() <span class="op">==</span> <span class="st">"spam"</span>)</span>
+<span id="cb9-215"><a href="#cb9-215" aria-hidden="true" tabindex="-1"></a>spam_correct <span class="op">=</span> np.mean(y_pred[spam_mask] <span class="op">==</span> <span class="st">"spam"</span>)</span>
+<span id="cb9-216"><a href="#cb9-216" aria-hidden="true" tabindex="-1"></a><span class="co"># ham incorrectly identified</span></span>
+<span id="cb9-217"><a href="#cb9-217" aria-hidden="true" tabindex="-1"></a>ham_mask <span class="op">=</span> (y_test.to_numpy() <span class="op">==</span> <span class="st">"ham"</span>)</span>
+<span id="cb9-218"><a href="#cb9-218" aria-hidden="true" tabindex="-1"></a>ham_incorrect <span class="op">=</span> np.mean(y_pred[ham_mask] <span class="op">==</span> <span class="st">"spam"</span>)</span>
+<span id="cb9-219"><a href="#cb9-219" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Spam correctly identified:"</span>, spam_correct)</span>
+<span id="cb9-220"><a href="#cb9-220" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ham incorrectly identified:"</span>, ham_incorrect)</span>
+<span id="cb9-221"><a href="#cb9-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-222"><a href="#cb9-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-223"><a href="#cb9-223" aria-hidden="true" tabindex="-1"></a>This will yield,</span>
+<span id="cb9-224"><a href="#cb9-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-225"><a href="#cb9-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-226"><a href="#cb9-226" aria-hidden="true" tabindex="-1"></a><span class="in">Spam correctly identified: np.float64(0.9513513513513514)</span></span>
+<span id="cb9-227"><a href="#cb9-227" aria-hidden="true" tabindex="-1"></a><span class="in">Ham incorrectly identified: np.float64(0.012417218543046357)</span></span>
+<span id="cb9-228"><a href="#cb9-228" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-229"><a href="#cb9-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-230"><a href="#cb9-230" aria-hidden="true" tabindex="-1"></a><span class="fu">## CTA</span></span>
+<span id="cb9-231"><a href="#cb9-231" aria-hidden="true" tabindex="-1"></a>While naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.</span>
+<span id="cb9-232"><a href="#cb9-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-233"><a href="#cb9-233" aria-hidden="true" tabindex="-1"></a>This is just one of many implementations of the Bayes Naive Classifier. Try implementing your own Bayes Naive Classifier in your machine and try using a different dataset!</span>
+<span id="cb9-234"><a href="#cb9-234" aria-hidden="true" tabindex="-1"></a>You can find similar datasets in websites like <span class="co">[</span><span class="ot">UCI Machine Learning Repository</span><span class="co">](https://archive.ics.uci.edu/dataset/228/sms+spam+collection)</span> and <span class="co">[</span><span class="ot">IEEE DataPort</span><span class="co">](https://ieee-dataport.org/documents/sms-spam-dataset)</span> for free. </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
