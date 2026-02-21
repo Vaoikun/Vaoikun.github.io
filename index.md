@@ -26,6 +26,8 @@ I built this site using [Quarto](https://quarto.org/) and host it on [GitHub Pag
 ## 📈 My Projects
 
 ::: {.grid}
+### [Naive Bayes Algorithm Tutorial](https://vaoikun.github.io/tutorial)
+Learn how to implement a spam filter in python.
 
 ::: {.g-col-6}
 ### [Data Exploration Project](projects/eda.qmd)
