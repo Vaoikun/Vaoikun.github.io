@@ -27,16 +27,16 @@ where $C$ is the random variable representing the class of data. Using Bayes’ 
 
 For any $k \in K$,
 
-$$
+```math
 P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}.
-$$
+```
 
 After many lines of math, we get:
 
-$$
+```math
 \arg\max_{k \in K} P(C = k \mid \mathbf{x}) = 
 \arg\max_{k \in K} P(C = k)\prod_{i=1}^{n} P(x_i \mid C = k).
-$$
+```
 
 ---
 
