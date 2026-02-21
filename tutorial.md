@@ -6,6 +6,8 @@ title: "Tutorial"
 <img src="Spam.jpeg" alt="Description" width="100">
 </div>
 
+[Home](https://vaoikun.github.io/)
+
 # Naive Bayes Classifiers Tutorial
 
 ## Headline
