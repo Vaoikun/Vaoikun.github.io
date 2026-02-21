@@ -25,7 +25,7 @@ $$
 
 where $C$ is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable.
 
-For any $$k \in K$$,
+For any $k \in K$,
 
 $$
 P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}.
@@ -80,7 +80,7 @@ class NaiveBayesFilter(ClassifierMixin):
 ```
 
 We then create a method called fit that compute 
-$$P(C = \text{Spam}), P(C = \text{Ham})$$ and $$P(x_i|C)$$ 
+$P(C = \text{Spam}), P(C = \text{Ham})$ and $P(x_i|C)$
 to fit the model,
 
 ```python
@@ -115,7 +115,7 @@ to fit the model,
         return self
 ```
 
-We can see that ```self.ham_probs['out']``` will give the value for $$P(x_i = '\text{out}' \mid C = \text{ham})$$,
+We can see that ```self.ham_probs['out']``` will give the value for $P(x_i = '\text{out}' \mid C = \text{ham})$,
 
 ```python
 # Example model trained on the first 300 data points
@@ -136,7 +136,7 @@ P(C = k) \Pi^n_{i=1} P(x_i \mid C=k)
 $$
 
 for each class $$k$$ .
-Directly computing this probability as a product can lead to an issue: underflow. If $$\mathbf{x}$$ is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability. 
+Directly computing this probability as a product can lead to an issue: underflow. If $\mathbf{x}$ is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability. 
 
 ```python
     def predict_proba(self, X):
