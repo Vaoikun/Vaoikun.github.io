@@ -274,7 +274,7 @@ They are called naïve because they assume independence between the features. Th
 \arg\max_{k \in K} P(C = k \mid \mathbf{x})
 \]</span></p>
 <p>where <span class="math inline">\(C\)</span> is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable.</p>
-<p>For any <span class="math display">\[k \in K\]</span>,</p>
+<p>For any <span class="math inline">\(k \in K\)</span>,</p>
 <p><span class="math display">\[
 P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}.
 \]</span></p>
@@ -334,7 +334,7 @@ P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_prob <span class="op">=</span> <span class="va">None</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spam_probs <span class="op">=</span> {}</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ham_probs <span class="op">=</span> {}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>We then create a method called fit that compute <span class="math display">\[P(C = \text{Spam}), P(C = \text{Ham})\]</span> and <span class="math display">\[P(x_i|C)\]</span> to fit the model,</p>
+<p>We then create a method called fit that compute <span class="math inline">\(P(C = \text{Spam}), P(C = \text{Ham})\)</span> and <span class="math inline">\(P(x_i|C)\)</span> to fit the model,</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X, y):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Compute the values P(C=Ham), P(C=Spam), and P(x_i|C) to fit the model.</span></span>
@@ -364,7 +364,7 @@ P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x
 <span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.ham_probs[w]  <span class="op">=</span> (ham_counts.get(w, <span class="dv">0</span>)  <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (total_ham_words  <span class="op">+</span> <span class="dv">2</span>)</span>
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>We can see that <code>self.ham_probs['out']</code> will give the value for <span class="math display">\[P(x_i = '\text{out}' \mid C = \text{ham})\]</span>,</p>
+<p>We can see that <code>self.ham_probs['out']</code> will give the value for <span class="math inline">\(P(x_i = '\text{out}' \mid C = \text{ham})\)</span>,</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example model trained on the first 300 data points</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>nb <span class="op">=</span> NaiveBayesFilter()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>nb.fit(X[:<span class="dv">300</span>], y[:<span class="dv">300</span>])</span>
@@ -378,7 +378,7 @@ P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x
 <p><span class="math display">\[
 P(C = k) \Pi^n_{i=1} P(x_i \mid C=k)
 \]</span></p>
-<p>for each class <span class="math display">\[k\]</span> . Directly computing this probability as a product can lead to an issue: underflow. If <span class="math display">\[\mathbf{x}\]</span> is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability.</p>
+<p>for each class <span class="math display">\[k\]</span> . Directly computing this probability as a product can lead to an issue: underflow. If <span class="math inline">\(\mathbf{x}\)</span> is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict_proba(<span class="va">self</span>, X):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">'''</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">        Find ln(P(C=k,x)) for each x in X and for each class.</span></span>
@@ -454,7 +454,7 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
 <section id="cta" class="level2">
 <h2 class="anchored" data-anchor-id="cta">CTA</h2>
 <p>While naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.</p>
-<p>This is just one of many implementations of the Bayes Naive Classifier. Try implementing your own Bayes Naive Classifier in your machine and try using a different dataset! You can find similar datasets in websites like <a href="https://archive.ics.uci.edu/dataset/228/sms+spam+collection">UCI Machine Learning Repository</a> and <a href="https://ieee-dataport.org/documents/sms-spam-dataset">IEEE DataPort</a> for free.</p>
+<p>This is just one of many implementations of the naïve Bayes Classifier. Try implementing your own naïve Bayes Classifier in your machine and try using a different dataset! You can find similar datasets in websites like <a href="https://archive.ics.uci.edu/dataset/228/sms+spam+collection">UCI Machine Learning Repository</a> and <a href="https://ieee-dataport.org/documents/sms-spam-dataset">IEEE DataPort</a> for free.</p>
 
 
 <!-- -->
@@ -941,7 +941,7 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>where $C$ is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable.</span>
 <span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>For any $$k \in K$$,</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>For any $k \in K$,</span>
 <span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x})}.</span>
@@ -996,7 +996,7 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
 <span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>We then create a method called fit that compute </span>
-<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>$$P(C = \text{Spam}), P(C = \text{Ham})$$ and $$P(x_i|C)$$ </span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>$P(C = \text{Spam}), P(C = \text{Ham})$ and $P(x_i|C)$</span>
 <span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a>to fit the model,</span>
 <span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
@@ -1031,7 +1031,7 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
 <span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
 <span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>We can see that ```self.ham_probs<span class="co">[</span><span class="ot">'out'</span><span class="co">]</span>``` will give the value for $$P(x_i = '\text{out}' \mid C = \text{ham})$$,</span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>We can see that ```self.ham_probs<span class="co">[</span><span class="ot">'out'</span><span class="co">]</span>``` will give the value for $P(x_i = '\text{out}' \mid C = \text{ham})$,</span>
 <span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
 <span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a><span class="co"># Example model trained on the first 300 data points</span></span>
@@ -1052,7 +1052,7 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
 <span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a>for each class $$k$$ .</span>
-<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a>Directly computing this probability as a product can lead to an issue: underflow. If $$\mathbf{x}$$ is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability. </span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a>Directly computing this probability as a product can lead to an issue: underflow. If $\mathbf{x}$ is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability. </span>
 <span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
 <span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict_proba(<span class="va">self</span>, X):</span>
@@ -1146,7 +1146,7 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
 <span id="cb9-230"><a href="#cb9-230" aria-hidden="true" tabindex="-1"></a><span class="fu">## CTA</span></span>
 <span id="cb9-231"><a href="#cb9-231" aria-hidden="true" tabindex="-1"></a>While naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.</span>
 <span id="cb9-232"><a href="#cb9-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-233"><a href="#cb9-233" aria-hidden="true" tabindex="-1"></a>This is just one of many implementations of the Bayes Naive Classifier. Try implementing your own Bayes Naive Classifier in your machine and try using a different dataset!</span>
+<span id="cb9-233"><a href="#cb9-233" aria-hidden="true" tabindex="-1"></a>This is just one of many implementations of the naïve Bayes Classifier. Try implementing your own naïve Bayes Classifier in your machine and try using a different dataset!</span>
 <span id="cb9-234"><a href="#cb9-234" aria-hidden="true" tabindex="-1"></a>You can find similar datasets in websites like <span class="co">[</span><span class="ot">UCI Machine Learning Repository</span><span class="co">](https://archive.ics.uci.edu/dataset/228/sms+spam+collection)</span> and <span class="co">[</span><span class="ot">IEEE DataPort</span><span class="co">](https://ieee-dataport.org/documents/sms-spam-dataset)</span> for free. </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
