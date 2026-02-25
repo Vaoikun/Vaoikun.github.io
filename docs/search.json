@@ -1,0 +1,150 @@
+[
+  {
+    "objectID": "about.html#background",
+    "href": "about.html#background",
+    "title": "About Me",
+    "section": "Background",
+    "text": "Background\nI am currently studying applied mathematics through ACME program at BYU. I have a great interest in machine learning and AI, wanting to become a data scientist. I have done many projects, including running tree regression on Steam reviews to predict the influence of the reviews on games."
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About Me",
+    "section": "Education",
+    "text": "Education\n\nBS in Mathematics - Brigham Young University, [2026]\nRelevant Coursework:\n\n\n\n\nMachine Learning\nModeling Uncertainty\nDifferential Equations\n\n\nBayesian Statistics\nReal Analysis\nComplex Analysis"
+  },
+  {
+    "objectID": "about.html#skills-interests",
+    "href": "about.html#skills-interests",
+    "title": "About Me",
+    "section": "Skills & Interests",
+    "text": "Skills & Interests\nCompleted Python for Machine Learning & Data Science Masterclass by Jose Portilla, Pierian Training 1st Grade Japan Official Examination in Computing (Shows proficiency in IS and business computing) 2nd Grade Japan Official Business Skills Test in Bookkeeping (Equivalent of AIPB Certified Bookkeeper)\n\nTechnical Skills\n\nProgramming: Python, JavaScript, HTML, CSS, VBAMacro, R, SQL\nData Analysis: Pandas, NumPy, Scipy\nVisualization: Matplotlib, Seaborn\nMachine Learning: Scikit-learn\nTools: Jupyter Notebooks, Git/GitHub, AWS\n\n\n\nAreas of Interest\n\nAI\nMachine Learning"
+  },
+  {
+    "objectID": "about.html#goals",
+    "href": "about.html#goals",
+    "title": "About Me",
+    "section": "Goals",
+    "text": "Goals\nI want to gain more skills as a data scientist in the industry for a few years after graduation. Then, I want to start up a company to assist with education using AI."
+  },
+  {
+    "objectID": "about.html#contact",
+    "href": "about.html#contact",
+    "title": "About Me",
+    "section": "Contact",
+    "text": "Contact\n\nEmail: vancewilliams@icloud.com\nGitHub: github.com/vaoikun\nLinkedIn: linkedin.com/in/vance-williams-\n\n\nThis portfolio showcases my learning progress and projects completed during my data science studies."
+  },
+  {
+    "objectID": "tutorial.html",
+    "href": "tutorial.html",
+    "title": "Tutorial",
+    "section": "",
+    "text": "Home"
+  },
+  {
+    "objectID": "tutorial.html#headline",
+    "href": "tutorial.html#headline",
+    "title": "Tutorial",
+    "section": "Headline　",
+    "text": "Headline　\nNaïve Bayes classifiers are a family of machine learning classification methods that use Bayes’ theorem to probabilistically categorize data.\nThey are called naïve because they assume independence between the features. The main idea is to use Bayes’ theorem to determine the probability that a certain data point belongs in a certain class, given the features of that data. Despite what the name may suggest, the naïve Bayes classifier is not a Bayesian method, as it is based on likelihood rather than Bayesian inference."
+  },
+  {
+    "objectID": "tutorial.html#introduction",
+    "href": "tutorial.html#introduction",
+    "title": "Tutorial",
+    "section": "Introduction",
+    "text": "Introduction\n\nHow does it work?\nGiven the feature vector of a piece of data we want to classify, we want to know which of all the classes is most likely. Essentially, we want to answer the following question:\n\\[\n\\arg\\max_{k \\in K} P(C = k \\mid \\mathbf{x})\n\\]\nwhere \\(C\\) is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable.\nFor any \\(k \\in K\\),\n\\[\nP(C = k \\mid \\mathbf{x}) = \\frac{P(C = k)\\,P(\\mathbf{x} \\mid C = k)}{P(\\mathbf{x})}.\n\\]\nAfter many lines of math, we get:\n\\[\n\\arg\\max_{k \\in K} P(C = k \\mid \\mathbf{x}) =\n\\arg\\max_{k \\in K} P(C = k)\\prod_{i=1}^{n} P(x_i \\mid C = k).\n\\]\n\n\n\nSpam Problem\nA spam filter is just a special case of a classifier with two classes: spam and not spam (often called ham). Spam filtering is a situation where naïve Bayes classifiers perform relatively well.\nWe will use the SMS spam dataset from\nKaggle SMS Spam Collection.\nAfter the data is cleaned by converting to lowercase and removing all punctuation, we are ready to start the classification.\nData is expected to look something like,\n\n\n\n\n\n\n\nham\ngo until jurong point crazy available only in…\n\n\nspam\nfree entry in 2 a wkly comp to win fa cup final tkts 21st may 2005 text fa to…\n\n\nham\nnah i dont think he goes to usf he lives around here though…\n\n\nspam\nfreemsg hey there darling its been 3 weeks now and no word back…"
+  },
+  {
+    "objectID": "tutorial.html#body",
+    "href": "tutorial.html#body",
+    "title": "Tutorial",
+    "section": "Body",
+    "text": "Body\n\nNaive Bayes Class\nWe first create a Python class called NaiveBayesFilter with a constructor:\nclass NaiveBayesFilter(ClassifierMixin):\n    '''\n    A Naive Bayes Classifier that sorts messages into spam or ham.\n    '''\n\n    def __init__(self):\n        self.ham_prob = None\n        self.spam_prob = None\n        self.spam_probs = {}\n        self.ham_probs = {}\nWe then create a method called fit that compute \\(P(C = \\text{Spam}), P(C = \\text{Ham})\\) and \\(P(x_i|C)\\) to fit the model,\n    def fit(self, X, y):\n        '''\n        Compute the values P(C=Ham), P(C=Spam), and P(x_i|C) to fit the model.\n\n        Parameters:\n            X (pd.Series): training data\n            y (pd.Series): training labels\n        '''\n        N = len(y)\n        self.ham_prob = sum(y == \"ham\") / N\n        self.spam_prob = sum(y == \"spam\") / N\n        # Tokenization\n        tokens = X.astype(str).str.split() # Split at white spaces\n        spam_tokens = [w for msg in tokens[y == \"spam\"] for w in msg]\n        ham_tokens  = [w for msg in tokens[y == \"ham\"]  for w in msg]\n        spam_counts = Counter(spam_tokens)\n        ham_counts  = Counter(ham_tokens)\n        vocab = set(spam_counts) | set(ham_counts)\n        V = len(vocab)\n        # Total number of word occurrences in each class\n        total_spam_words = sum(spam_counts.values())\n        total_ham_words  = sum(ham_counts.values())\n        self.spam_probs = {}\n        self.ham_probs = {}\n        for w in vocab:\n            self.spam_probs[w] = (spam_counts.get(w, 0) + 1) / (total_spam_words + 2)\n            self.ham_probs[w]  = (ham_counts.get(w, 0)  + 1) / (total_ham_words  + 2)\n\n        return self\nWe can see that self.ham_probs['out'] will give the value for \\(P(x_i = '\\text{out}' \\mid C = \\text{ham})\\),\n# Example model trained on the first 300 data points\nnb = NaiveBayesFilter()\nnb.fit(X[:300], y[:300])\n\n# Check spam and ham probabilities of 'out'\nnb.ham_probs['out']\n0.003147128245476003\nnb.spam_probs['out']\n0.004166666666666667\nNow that we have trained our model, we can predict the class of a message by calculating\n\\[\nP(C = k) \\Pi^n_{i=1} P(x_i \\mid C=k)\n\\]\nfor each class \\[k\\] . Directly computing this probability as a product can lead to an issue: underflow. If \\(\\mathbf{x}\\) is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability.\n    def predict_proba(self, X):\n        '''\n        Find ln(P(C=k,x)) for each x in X and for each class.\n\n        Parameters:\n            X (pd.Series)(N,): messages to classify\n\n        Return:\n            (ndarray)(N,2): Log probability each message is ham or spam.\n                Column 0 is ham, column 1 is spam.\n        '''\n        msgs = X.astype(str).values\n        N = len(msgs)\n        # log priors\n        log_ham_prior = np.log(self.ham_prob)\n        log_spam_prior = np.log(self.spam_prob)\n        log_unseen = np.log(0.5)\n        out = np.zeros((N, 2), dtype=float)\n        for i, msg in enumerate(msgs):\n            log_ham = log_ham_prior\n            log_spam = log_spam_prior\n            # tokenization\n            for w in msg.split():\n                log_ham += np.log(self.ham_probs.get(w, 0.5))\n                log_spam += np.log(self.spam_probs.get(w, 0.5))\n\n            out[i, 0] = log_ham\n            out[i, 1] = log_spam\n\n        return out\nThis will produce something like,\nnb.predict_proba(X[800:805])\narray([[ -30.8951931 ,  -35.42406687],\n       [-108.85464069,  -91.70332157],\n       [ -74.65014875,  -88.71184709],\n       [-164.94297917, -133.8497405 ],\n       [-127.17743715, -101.32098062]])\nFinally, we will implement the method predict() that makes predicted classification,\n    def predict(self, X):\n        '''\n        Predict the labels of each row in X, using self.predict_proba().\n        The label will be a string that is either 'spam' or 'ham'.\n\n        Parameters:\n            X (pd.Series)(N,): messages to classify\n\n        Return:\n            (ndarray)(N,): label for each message\n        '''\n        logj = self.predict_proba(X)\n        preds = np.where(logj[:, 1] &gt; logj[:, 0], \"spam\", \"ham\")\n        return preds\nWe can now test our spam filter. We will use the sklearn’s train_test_split function with the default parameters to split the data into training and test sets. Train a NaiveBayesFilter on the train set, and have it predict the labels of each message in the test set.\nX = df.Message\ny = df.Label\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)\nnb = NaiveBayesFilter()\nnb.fit(X_train, y_train)\ny_pred = nb.predict(X_test)\n# spam correctly identified\nspam_mask = (y_test.to_numpy() == \"spam\")\nspam_correct = np.mean(y_pred[spam_mask] == \"spam\")\n# ham incorrectly identified\nham_mask = (y_test.to_numpy() == \"ham\")\nham_incorrect = np.mean(y_pred[ham_mask] == \"spam\")\nprint(\"Spam correctly identified:\", spam_correct)\nprint(\"Ham incorrectly identified:\", ham_incorrect)\nThis will yield,\nSpam correctly identified: np.float64(0.9513513513513514)\nHam incorrectly identified: np.float64(0.012417218543046357)"
+  },
+  {
+    "objectID": "tutorial.html#cta",
+    "href": "tutorial.html#cta",
+    "title": "Tutorial",
+    "section": "CTA",
+    "text": "CTA\nWhile naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.\nThis is just one of many implementations of the naïve Bayes Classifier. Try implementing your own naïve Bayes Classifier in your machine and try using a different dataset! You can find similar datasets in websites like UCI Machine Learning Repository and IEEE DataPort for free."
+  },
+  {
+    "objectID": "projects/index.html",
+    "href": "projects/index.html",
+    "title": "Projects Overview",
+    "section": "",
+    "text": "Description: Pick a dataset and explore it to discover insights and answer questions.\n\n\n\nDescription: Find an interesting data source, collect the data, and prepare it for analysis.\n\n\n\nDescription: A comprehensive project that shows off my data science skills.",
+    "crumbs": [
+      "Projects Overview"
+    ]
+  },
+  {
+    "objectID": "projects/index.html#all-projects",
+    "href": "projects/index.html#all-projects",
+    "title": "Projects Overview",
+    "section": "",
+    "text": "Description: Pick a dataset and explore it to discover insights and answer questions.\n\n\n\nDescription: Find an interesting data source, collect the data, and prepare it for analysis.\n\n\n\nDescription: A comprehensive project that shows off my data science skills.",
+    "crumbs": [
+      "Projects Overview"
+    ]
+  },
+  {
+    "objectID": "projects/eda.html",
+    "href": "projects/eda.html",
+    "title": "EDA Project",
+    "section": "",
+    "text": "This is coming down the pipeline. Check again later.",
+    "crumbs": [
+      "EDA Project"
+    ]
+  },
+  {
+    "objectID": "projects/data-acquisition.html",
+    "href": "projects/data-acquisition.html",
+    "title": "Data Acquisition Project",
+    "section": "",
+    "text": "This is coming down the pipeline. Check again later.",
+    "crumbs": [
+      "Data Acquisition Project"
+    ]
+  },
+  {
+    "objectID": "projects/final-project.html",
+    "href": "projects/final-project.html",
+    "title": "Final Project",
+    "section": "",
+    "text": "This is coming down the pipeline. Check again later.",
+    "crumbs": [
+      "Final Project"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome to My Data Science Portfolio",
+    "section": "",
+    "text": "Welcome to my data science portfolio! This site shows my journey learning data science and analytics. Here you’ll find projects that demonstrate what I’ve learned and discovered.\n\n\nThis portfolio shows my work learning data science. Each project includes:\n\nMy code with documentation\nVisualizations I created\nWhat I learned and discovered\n\nI built this site using Quarto and host it on GitHub Pages.\n\n\n\n\nProgramming: Python, Pandas for data analysis\nVisualization: Creating charts with Matplotlib and Seaborn\nData Collection: Getting data from files, websites, and APIs\nAnalysis: Finding patterns and answering questions with data\n\n\n\n\n\n\n\nLearn how to implement a spam filter in python.\n\n\n\nLearn how I explore datasets to find interesting patterns and answer questions.\n\n\n\nSee how I gather data from different sources and prepare it for analysis.\n\n\n\nSee how I tackle a data science project beginning to end.\n\n\n\nThanks for visiting! Feel free to explore my projects and see what I’m learning. Click Here to learn more about me!"
+  },
+  {
+    "objectID": "index.html#about-this-portfolio",
+    "href": "index.html#about-this-portfolio",
+    "title": "Welcome to My Data Science Portfolio",
+    "section": "",
+    "text": "This portfolio shows my work learning data science. Each project includes:\n\nMy code with documentation\nVisualizations I created\nWhat I learned and discovered\n\nI built this site using Quarto and host it on GitHub Pages."
+  },
+  {
+    "objectID": "index.html#skills-im-learning",
+    "href": "index.html#skills-im-learning",
+    "title": "Welcome to My Data Science Portfolio",
+    "section": "",
+    "text": "Programming: Python, Pandas for data analysis\nVisualization: Creating charts with Matplotlib and Seaborn\nData Collection: Getting data from files, websites, and APIs\nAnalysis: Finding patterns and answering questions with data"
+  },
+  {
+    "objectID": "index.html#my-projects",
+    "href": "index.html#my-projects",
+    "title": "Welcome to My Data Science Portfolio",
+    "section": "",
+    "text": "Learn how to implement a spam filter in python.\n\n\n\nLearn how I explore datasets to find interesting patterns and answer questions.\n\n\n\nSee how I gather data from different sources and prepare it for analysis.\n\n\n\nSee how I tackle a data science project beginning to end.\n\n\n\nThanks for visiting! Feel free to explore my projects and see what I’m learning. Click Here to learn more about me!"
+  }
+]
