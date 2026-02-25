@@ -222,7 +222,7 @@ print("Ham incorrectly identified:", ham_incorrect)
 
 This will yield,
 
-```
+```python
 Spam correctly identified: np.float64(0.9513513513513514)
 Ham incorrectly identified: np.float64(0.012417218543046357)
 ```
