@@ -48,20 +48,23 @@ df.head()
 |       0  |   9222   | Practice | ... |
 |       1  |   7763   | Practice | ... |
 
-Now you are ready to perform EDA on OpenF1 datasets! Check out [OpenF1 API endpoints](https://openf1.org/docs/#api-endpoints) for more datasets to explore!
-
-For our EDA, we merge and stack Sessions result and Laps datasets across 30 sessions in 2023 season. We will also add 
+For our EDA, we merge and stack Sessions result and Laps datasets across 15 sessions in 2023 season. We will also add artificial features called ```best_lap```, ```consistency``` and ```avg_lap``` which are just the best lap time, standard deviation and the average lap time for the drivers. 
 
 ## Overview on Laps datasets and Session result datasets
 
-Here's the quick overview for our Laps and Session result datasets. We will use ```7782``` as our session_key for simplicity. 
+Here's the quick overview for our Laps and Session result datasets.
 
-### Laps
+### Driver Stats
 
-- **Total sample size**: ()
-- **Main features**: 
+- **Total sample size**: (1802, 6)
+- **Main features**: ```session_key``` (References races), ```driver_number``` (References drivers), ```avg_lap```(Average lap time grouped by ```driver_number``` and ```session_key```), ```best_lap```(Average lap time grouped by ```driver_number``` and ```session_key```), ```consistency```(Standard deviation for the lap time grouped by ```driver_number``` and ```session_key```), ```position```(Finished position grouped by ```driver_number``` and ```session_key```)
+- **Transformation**: Stacked data was grouped by ```driver_number``` and ```session_key```, and new artificial featrues, ```best_lap```, ```consistency``` and ```avg_lap```, are created.
+- **Causions**: Data is clean, well organized, however, ```lap_time``` and ```position``` variables are heavily based on the ```session_key``` becuase each racing track has difference track distance, layout, and orientation. This EDA did not take that an account for simplicity.
 
-### Session result
+### More information about the data
 
-- **Total sample size**: ()
-- **Main features**: 
+You can perform your own EDA on OpenF1 datasets! Check out [OpenF1 API endpoints](https://openf1.org/docs/#api-endpoints) for more datasets to explore!
+
+Check out my (Github repo)[https://github.com/Vaoikun/Data_Acquisition_Blog] for full code.
+
+Thank you for reading!
