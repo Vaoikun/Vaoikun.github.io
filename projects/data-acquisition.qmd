@@ -72,11 +72,6 @@ df.head()
 
 This produces a table containing metadata about each session in the season.
 
-|   | session_key | session_name | ... |
-|---|-------------|--------------|-----|
-|0|9222|Practice|...|
-|1|7763|Practice|...|
-
 Each `session_key` uniquely identifies a race session and allows us to retrieve lap-level telemetry data.
 
 For this exploratory analysis we combine two datasets:
