@@ -37,37 +37,109 @@
   {
     "objectID": "tutorial.html",
     "href": "tutorial.html",
-    "title": "Tutorial",
+    "title": "Naïve Bayes Tutorial",
     "section": "",
     "text": "Home"
   },
   {
-    "objectID": "tutorial.html#headline",
-    "href": "tutorial.html#headline",
-    "title": "Tutorial",
-    "section": "Headline　",
-    "text": "Headline　\nNaïve Bayes classifiers are a family of machine learning classification methods that use Bayes’ theorem to probabilistically categorize data.\nThey are called naïve because they assume independence between the features. The main idea is to use Bayes’ theorem to determine the probability that a certain data point belongs in a certain class, given the features of that data. Despite what the name may suggest, the naïve Bayes classifier is not a Bayesian method, as it is based on likelihood rather than Bayesian inference."
+    "objectID": "tutorial.html#what-is-naïve-bayes-classifiers",
+    "href": "tutorial.html#what-is-naïve-bayes-classifiers",
+    "title": "Naïve Bayes Tutorial",
+    "section": "What is Naïve Bayes Classifiers?",
+    "text": "What is Naïve Bayes Classifiers?\nNaïve Bayes classifiers are a family of machine learning classification methods that use Bayes’ theorem to probabilistically categorize data.\nThey are called naïve because they assume independence between the features. The main idea is to use Bayes’ theorem to determine the probability that a certain data point belongs in a certain class, given the features of that data. Despite what the name may suggest, the naïve Bayes classifier is not a Bayesian method, as it is based on likelihood rather than Bayesian inference."
   },
   {
     "objectID": "tutorial.html#introduction",
     "href": "tutorial.html#introduction",
-    "title": "Tutorial",
+    "title": "Naïve Bayes Tutorial",
     "section": "Introduction",
     "text": "Introduction\n\nHow does it work?\nGiven the feature vector of a piece of data we want to classify, we want to know which of all the classes is most likely. Essentially, we want to answer the following question:\n\\[\n\\arg\\max_{k \\in K} P(C = k \\mid \\mathbf{x})\n\\]\nwhere \\(C\\) is the random variable representing the class of data. Using Bayes’ Theorem, we can reformulate this problem into something that is actually computable.\nFor any \\(k \\in K\\),\n\\[\nP(C = k \\mid \\mathbf{x}) = \\frac{P(C = k)\\,P(\\mathbf{x} \\mid C = k)}{P(\\mathbf{x})}.\n\\]\nAfter many lines of math, we get:\n\\[\n\\arg\\max_{k \\in K} P(C = k \\mid \\mathbf{x}) =\n\\arg\\max_{k \\in K} P(C = k)\\prod_{i=1}^{n} P(x_i \\mid C = k).\n\\]\n\n\n\nSpam Problem\nA spam filter is just a special case of a classifier with two classes: spam and not spam (often called ham). Spam filtering is a situation where naïve Bayes classifiers perform relatively well.\nWe will use the SMS spam dataset from\nKaggle SMS Spam Collection.\nAfter the data is cleaned by converting to lowercase and removing all punctuation, we are ready to start the classification.\nData is expected to look something like,\n\n\n\n\n\n\n\nham\ngo until jurong point crazy available only in…\n\n\nspam\nfree entry in 2 a wkly comp to win fa cup final tkts 21st may 2005 text fa to…\n\n\nham\nnah i dont think he goes to usf he lives around here though…\n\n\nspam\nfreemsg hey there darling its been 3 weeks now and no word back…"
   },
   {
-    "objectID": "tutorial.html#body",
-    "href": "tutorial.html#body",
-    "title": "Tutorial",
-    "section": "Body",
-    "text": "Body\n\nNaive Bayes Class\nWe first create a Python class called NaiveBayesFilter with a constructor:\nclass NaiveBayesFilter(ClassifierMixin):\n    '''\n    A Naive Bayes Classifier that sorts messages into spam or ham.\n    '''\n\n    def __init__(self):\n        self.ham_prob = None\n        self.spam_prob = None\n        self.spam_probs = {}\n        self.ham_probs = {}\nWe then create a method called fit that compute \\(P(C = \\text{Spam}), P(C = \\text{Ham})\\) and \\(P(x_i|C)\\) to fit the model,\n    def fit(self, X, y):\n        '''\n        Compute the values P(C=Ham), P(C=Spam), and P(x_i|C) to fit the model.\n\n        Parameters:\n            X (pd.Series): training data\n            y (pd.Series): training labels\n        '''\n        N = len(y)\n        self.ham_prob = sum(y == \"ham\") / N\n        self.spam_prob = sum(y == \"spam\") / N\n        # Tokenization\n        tokens = X.astype(str).str.split() # Split at white spaces\n        spam_tokens = [w for msg in tokens[y == \"spam\"] for w in msg]\n        ham_tokens  = [w for msg in tokens[y == \"ham\"]  for w in msg]\n        spam_counts = Counter(spam_tokens)\n        ham_counts  = Counter(ham_tokens)\n        vocab = set(spam_counts) | set(ham_counts)\n        V = len(vocab)\n        # Total number of word occurrences in each class\n        total_spam_words = sum(spam_counts.values())\n        total_ham_words  = sum(ham_counts.values())\n        self.spam_probs = {}\n        self.ham_probs = {}\n        for w in vocab:\n            self.spam_probs[w] = (spam_counts.get(w, 0) + 1) / (total_spam_words + 2)\n            self.ham_probs[w]  = (ham_counts.get(w, 0)  + 1) / (total_ham_words  + 2)\n\n        return self\nWe can see that self.ham_probs['out'] will give the value for \\(P(x_i = '\\text{out}' \\mid C = \\text{ham})\\),\n# Example model trained on the first 300 data points\nnb = NaiveBayesFilter()\nnb.fit(X[:300], y[:300])\n\n# Check spam and ham probabilities of 'out'\nnb.ham_probs['out']\n0.003147128245476003\nnb.spam_probs['out']\n0.004166666666666667\nNow that we have trained our model, we can predict the class of a message by calculating\n\\[\nP(C = k) \\Pi^n_{i=1} P(x_i \\mid C=k)\n\\]\nfor each class \\[k\\] . Directly computing this probability as a product can lead to an issue: underflow. If \\(\\mathbf{x}\\) is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability.\n    def predict_proba(self, X):\n        '''\n        Find ln(P(C=k,x)) for each x in X and for each class.\n\n        Parameters:\n            X (pd.Series)(N,): messages to classify\n\n        Return:\n            (ndarray)(N,2): Log probability each message is ham or spam.\n                Column 0 is ham, column 1 is spam.\n        '''\n        msgs = X.astype(str).values\n        N = len(msgs)\n        # log priors\n        log_ham_prior = np.log(self.ham_prob)\n        log_spam_prior = np.log(self.spam_prob)\n        log_unseen = np.log(0.5)\n        out = np.zeros((N, 2), dtype=float)\n        for i, msg in enumerate(msgs):\n            log_ham = log_ham_prior\n            log_spam = log_spam_prior\n            # tokenization\n            for w in msg.split():\n                log_ham += np.log(self.ham_probs.get(w, 0.5))\n                log_spam += np.log(self.spam_probs.get(w, 0.5))\n\n            out[i, 0] = log_ham\n            out[i, 1] = log_spam\n\n        return out\nThis will produce something like,\nnb.predict_proba(X[800:805])\narray([[ -30.8951931 ,  -35.42406687],\n       [-108.85464069,  -91.70332157],\n       [ -74.65014875,  -88.71184709],\n       [-164.94297917, -133.8497405 ],\n       [-127.17743715, -101.32098062]])\nFinally, we will implement the method predict() that makes predicted classification,\n    def predict(self, X):\n        '''\n        Predict the labels of each row in X, using self.predict_proba().\n        The label will be a string that is either 'spam' or 'ham'.\n\n        Parameters:\n            X (pd.Series)(N,): messages to classify\n\n        Return:\n            (ndarray)(N,): label for each message\n        '''\n        logj = self.predict_proba(X)\n        preds = np.where(logj[:, 1] &gt; logj[:, 0], \"spam\", \"ham\")\n        return preds\nWe can now test our spam filter. We will use the sklearn’s train_test_split function with the default parameters to split the data into training and test sets. Train a NaiveBayesFilter on the train set, and have it predict the labels of each message in the test set.\nX = df.Message\ny = df.Label\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)\nnb = NaiveBayesFilter()\nnb.fit(X_train, y_train)\ny_pred = nb.predict(X_test)\n# spam correctly identified\nspam_mask = (y_test.to_numpy() == \"spam\")\nspam_correct = np.mean(y_pred[spam_mask] == \"spam\")\n# ham incorrectly identified\nham_mask = (y_test.to_numpy() == \"ham\")\nham_incorrect = np.mean(y_pred[ham_mask] == \"spam\")\nprint(\"Spam correctly identified:\", spam_correct)\nprint(\"Ham incorrectly identified:\", ham_incorrect)\nThis will yield,\nSpam correctly identified: np.float64(0.9513513513513514)\nHam incorrectly identified: np.float64(0.012417218543046357)"
+    "objectID": "tutorial.html#walkthorugh",
+    "href": "tutorial.html#walkthorugh",
+    "title": "Naïve Bayes Tutorial",
+    "section": "Walkthorugh",
+    "text": "Walkthorugh\n\nNaive Bayes Class\nWe first create a Python class called NaiveBayesFilter with a constructor:\nclass NaiveBayesFilter(ClassifierMixin):\n    '''\n    A Naive Bayes Classifier that sorts messages into spam or ham.\n    '''\n\n    def __init__(self):\n        self.ham_prob = None\n        self.spam_prob = None\n        self.spam_probs = {}\n        self.ham_probs = {}\nWe then create a method called fit that compute \\(P(C = \\text{Spam}), P(C = \\text{Ham})\\) and \\(P(x_i|C)\\) to fit the model,\n    def fit(self, X, y):\n        '''\n        Compute the values P(C=Ham), P(C=Spam), and P(x_i|C) to fit the model.\n\n        Parameters:\n            X (pd.Series): training data\n            y (pd.Series): training labels\n        '''\n        N = len(y)\n        self.ham_prob = sum(y == \"ham\") / N\n        self.spam_prob = sum(y == \"spam\") / N\n        # Tokenization\n        tokens = X.astype(str).str.split() # Split at white spaces\n        spam_tokens = [w for msg in tokens[y == \"spam\"] for w in msg]\n        ham_tokens  = [w for msg in tokens[y == \"ham\"]  for w in msg]\n        spam_counts = Counter(spam_tokens)\n        ham_counts  = Counter(ham_tokens)\n        vocab = set(spam_counts) | set(ham_counts)\n        V = len(vocab)\n        # Total number of word occurrences in each class\n        total_spam_words = sum(spam_counts.values())\n        total_ham_words  = sum(ham_counts.values())\n        self.spam_probs = {}\n        self.ham_probs = {}\n        for w in vocab:\n            self.spam_probs[w] = (spam_counts.get(w, 0) + 1) / (total_spam_words + 2)\n            self.ham_probs[w]  = (ham_counts.get(w, 0)  + 1) / (total_ham_words  + 2)\n\n        return self\nWe can see that self.ham_probs['out'] will give the value for \\(P(x_i = '\\text{out}' \\mid C = \\text{ham})\\),\n# Example model trained on the first 300 data points\nnb = NaiveBayesFilter()\nnb.fit(X[:300], y[:300])\n\n# Check spam and ham probabilities of 'out'\nnb.ham_probs['out']\n0.003147128245476003\nnb.spam_probs['out']\n0.004166666666666667\nNow that we have trained our model, we can predict the class of a message by calculating\n\\[\nP(C = k) \\Pi^n_{i=1} P(x_i \\mid C=k)\n\\]\nfor each class \\[k\\] . Directly computing this probability as a product can lead to an issue: underflow. If \\(\\mathbf{x}\\) is a particularly long message, then, since we are multiplying lots of numbers between 0 and 1, it is possible for the computed probability to underflow, or become too small to be machine representable with ordinary floating-point numbers. In this case the computed probability becomes 0. This is particularly problematic because if underflow happens for a sample for one class, it will likely also happen for all of the other classes, making such samples impossible to classify. To avoid this issue, we will work with the logarithm of the probability.\n    def predict_proba(self, X):\n        '''\n        Find ln(P(C=k,x)) for each x in X and for each class.\n\n        Parameters:\n            X (pd.Series)(N,): messages to classify\n\n        Return:\n            (ndarray)(N,2): Log probability each message is ham or spam.\n                Column 0 is ham, column 1 is spam.\n        '''\n        msgs = X.astype(str).values\n        N = len(msgs)\n        # log priors\n        log_ham_prior = np.log(self.ham_prob)\n        log_spam_prior = np.log(self.spam_prob)\n        log_unseen = np.log(0.5)\n        out = np.zeros((N, 2), dtype=float)\n        for i, msg in enumerate(msgs):\n            log_ham = log_ham_prior\n            log_spam = log_spam_prior\n            # tokenization\n            for w in msg.split():\n                log_ham += np.log(self.ham_probs.get(w, 0.5))\n                log_spam += np.log(self.spam_probs.get(w, 0.5))\n\n            out[i, 0] = log_ham\n            out[i, 1] = log_spam\n\n        return out\nThis will produce something like,\nnb.predict_proba(X[800:805])\narray([[ -30.8951931 ,  -35.42406687],\n       [-108.85464069,  -91.70332157],\n       [ -74.65014875,  -88.71184709],\n       [-164.94297917, -133.8497405 ],\n       [-127.17743715, -101.32098062]])\nFinally, we will implement the method predict() that makes predicted classification,\n    def predict(self, X):\n        '''\n        Predict the labels of each row in X, using self.predict_proba().\n        The label will be a string that is either 'spam' or 'ham'.\n\n        Parameters:\n            X (pd.Series)(N,): messages to classify\n\n        Return:\n            (ndarray)(N,): label for each message\n        '''\n        logj = self.predict_proba(X)\n        preds = np.where(logj[:, 1] &gt; logj[:, 0], \"spam\", \"ham\")\n        return preds\nWe can now test our spam filter. We will use the sklearn’s train_test_split function with the default parameters to split the data into training and test sets. Train a NaiveBayesFilter on the train set, and have it predict the labels of each message in the test set.\nX = df.Message\ny = df.Label\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)\nnb = NaiveBayesFilter()\nnb.fit(X_train, y_train)\ny_pred = nb.predict(X_test)\n# spam correctly identified\nspam_mask = (y_test.to_numpy() == \"spam\")\nspam_correct = np.mean(y_pred[spam_mask] == \"spam\")\n# ham incorrectly identified\nham_mask = (y_test.to_numpy() == \"ham\")\nham_incorrect = np.mean(y_pred[ham_mask] == \"spam\")\nprint(\"Spam correctly identified:\", spam_correct)\nprint(\"Ham incorrectly identified:\", ham_incorrect)\nThis will yield,\nSpam correctly identified: np.float64(0.9513513513513514)\nHam incorrectly identified: np.float64(0.012417218543046357)"
   },
   {
-    "objectID": "tutorial.html#cta",
-    "href": "tutorial.html#cta",
-    "title": "Tutorial",
-    "section": "CTA",
-    "text": "CTA\nWhile naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.\nThis is just one of many implementations of the naïve Bayes Classifier. Try implementing your own naïve Bayes Classifier in your machine and try using a different dataset! You can find similar datasets in websites like UCI Machine Learning Repository and IEEE DataPort for free."
+    "objectID": "tutorial.html#thank-you-for-reading",
+    "href": "tutorial.html#thank-you-for-reading",
+    "title": "Naïve Bayes Tutorial",
+    "section": "Thank You for Reading!",
+    "text": "Thank You for Reading!\nWhile naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.\nThis is just one of many implementations of the naïve Bayes Classifier. Try implementing your own naïve Bayes Classifier in your machine and try using a different dataset! You can find similar datasets in websites like UCI Machine Learning Repository and IEEE DataPort for free."
+  },
+  {
+    "objectID": "data_acq.html",
+    "href": "data_acq.html",
+    "title": "Open F1 Data Acquisition",
+    "section": "",
+    "text": "Formula 1 has grown dramatically in popularity in recent years, attracting a new generation of fans and analysts. Each season typically features one or two dominant drivers who consistently finish at the top of the standings. This raises an interesting analytical question:\n\n\nUsing publicly available data from the OpenF1 API, we perform a simple exploratory data analysis (EDA) to investigate the relationship between: - Best lap time - Lap time consistency - Final race position\nDominant drivers often appear to have both: - strong raw pace - strong consistency We can attempt to quantify these traits using lap time statistics derived from race telemetry.\n\n\n\nVariable\nDescription\n\n\n\n\nposition\nFinal finishing position in a race\n\n\nbest_lap\nFastest lap time achieved by a driver in a race\n\n\navg_lap\nAverage lap time for a driver during a race\n\n\nconsistency\nStandard deviation of lap times for a driver\n\n\n\n\n\n\nThe dataset used in this analysis is obtained from OpenF1. OpenF1 provides free access to Formula 1 telemetry and race data through an open API. ### “The entire project is open source, community-driven, and built with transparency.” Because the data is openly available and intended for public use, it is appropriate for educational analysis and experimentation. However, users should be aware of API usage limits and the importance of responsible data access.\n\n\n\nThe OpenF1 API provides several endpoints for retrieving race telemetry, session data, weather information, and more. We begin by retrieving all sessions for a given season.\nimport pandas as pd\nimport requests\n\n# Basic OpenF1 API interaction to get season results\nBASE_URL = \"https://api.openf1.org/v1\"\ndef get_season_results(season: int) -&gt; pd.DataFrame:\n    url = f\"{BASE_URL}/sessions\"\n    params = {\n        \"year\": season\n        }\n    sessions = requests.get(url, params=params)\n    sessions.raise_for_status()\n    session_data = sessions.json()\n    return pd.DataFrame(session_data)\nExample usage:\n# Example usage\ndf = get_season_results(2023)\ndf.head()\nThis produces a table containing metadata about each session in the season.\n\n\n\n\nsession_key\nsession_name\n…\n\n\n\n\n0\n9222\nPractice\n…\n\n\n1\n7763\nPractice\n…\n\n\n\nEach session_key uniquely identifies a race session and allows us to retrieve lap-level telemetry data.\nFor this exploratory analysis we combine two datasets: - Session Results – finishing positions for each driver - Lap Data – individual lap times recorded during the race These datasets are merged using the keys: - session_key - driver_number\n\n\n\nHere’s the quick overview for our Laps and Session result datasets.\n\n\n\nTotal sample size: (1802, 6)\nMain features and transormations:\n\n\n\n\nVariable\nDescription\n\n\n\n\nsession_key\nIdentifies the race session\n\n\ndriver_number\nUnique identifier for each driver\n\n\navg_lap\nAverage lap time for the driver in a race\n\n\nbest_lap\nFastest lap recorded by the driver\n\n\nconsistency\nStandard deviation of lap times\n\n\nposition\nFinal finishing position\n\n\n\n\nCausions: A key limitation of this dataset is that lap times vary significantly between circuits. Tracks differ in:\ncircuit length\nnumber of corners\ntrack layout\nelevation changes\naccidents Because of these differences, raw lap times are not directly comparable across races. In more advanced analyses, lap times are often normalized relative to the fastest lap in each race. For simplicity, this exploratory analysis uses raw lap times while acknowledging this limitation.\n\n\n\n\nAfter a few more lines of code, we can examine whether lap time consistency correlates with finishing position.\n\nSimilarly, we can examine the relationship between best lap time and finishing position.\n\nThese plots provide a simple way to explore whether raw pace or lap consistency better predicts race performance.\n\n\n\nThis analysis represents a simple exploratory study. Several improvements could be made in future work, such as, incorporating tire strategy and pit stops, investigating weather effects, and compare driver performance across teams. OpenF1 provides many additional endpoints that could support more sophisticated analyses.\n\n\n\nYou can perform your own analysis on OpenF1 datasets! Check out OpenF1 API endpoints for documentation.\nThe complete code used in this analysis can be found on (Github repo)[https://github.com/Vaoikun/Data_Acquisition_Blog].\n\n\n\n\nOpen telemetry datasets such as OpenF1 provide a valuable opportunity to explore motorsport performance data using modern data science tools. Even simple statistical measures such as lap consistency and best lap time can reveal meaningful insights about driver performance.\nAs Formula 1 continues to expand its data availability, opportunities for deeper analytics will only grow."
+  },
+  {
+    "objectID": "data_acq.html#can-race-results-be-partially-explained-by-lap-time-performance-metrics",
+    "href": "data_acq.html#can-race-results-be-partially-explained-by-lap-time-performance-metrics",
+    "title": "Open F1 Data Acquisition",
+    "section": "",
+    "text": "Using publicly available data from the OpenF1 API, we perform a simple exploratory data analysis (EDA) to investigate the relationship between: - Best lap time - Lap time consistency - Final race position\nDominant drivers often appear to have both: - strong raw pace - strong consistency We can attempt to quantify these traits using lap time statistics derived from race telemetry.\n\n\n\nVariable\nDescription\n\n\n\n\nposition\nFinal finishing position in a race\n\n\nbest_lap\nFastest lap time achieved by a driver in a race\n\n\navg_lap\nAverage lap time for a driver during a race\n\n\nconsistency\nStandard deviation of lap times for a driver"
+  },
+  {
+    "objectID": "data_acq.html#ethical-question",
+    "href": "data_acq.html#ethical-question",
+    "title": "Open F1 Data Acquisition",
+    "section": "",
+    "text": "The dataset used in this analysis is obtained from OpenF1. OpenF1 provides free access to Formula 1 telemetry and race data through an open API. ### “The entire project is open source, community-driven, and built with transparency.” Because the data is openly available and intended for public use, it is appropriate for educational analysis and experimentation. However, users should be aware of API usage limits and the importance of responsible data access."
+  },
+  {
+    "objectID": "data_acq.html#basic-api-practice",
+    "href": "data_acq.html#basic-api-practice",
+    "title": "Open F1 Data Acquisition",
+    "section": "",
+    "text": "The OpenF1 API provides several endpoints for retrieving race telemetry, session data, weather information, and more. We begin by retrieving all sessions for a given season.\nimport pandas as pd\nimport requests\n\n# Basic OpenF1 API interaction to get season results\nBASE_URL = \"https://api.openf1.org/v1\"\ndef get_season_results(season: int) -&gt; pd.DataFrame:\n    url = f\"{BASE_URL}/sessions\"\n    params = {\n        \"year\": season\n        }\n    sessions = requests.get(url, params=params)\n    sessions.raise_for_status()\n    session_data = sessions.json()\n    return pd.DataFrame(session_data)\nExample usage:\n# Example usage\ndf = get_season_results(2023)\ndf.head()\nThis produces a table containing metadata about each session in the season.\n\n\n\n\nsession_key\nsession_name\n…\n\n\n\n\n0\n9222\nPractice\n…\n\n\n1\n7763\nPractice\n…\n\n\n\nEach session_key uniquely identifies a race session and allows us to retrieve lap-level telemetry data.\nFor this exploratory analysis we combine two datasets: - Session Results – finishing positions for each driver - Lap Data – individual lap times recorded during the race These datasets are merged using the keys: - session_key - driver_number"
+  },
+  {
+    "objectID": "data_acq.html#overview-on-laps-datasets-and-session-result-datasets",
+    "href": "data_acq.html#overview-on-laps-datasets-and-session-result-datasets",
+    "title": "Open F1 Data Acquisition",
+    "section": "",
+    "text": "Here’s the quick overview for our Laps and Session result datasets.\n\n\n\nTotal sample size: (1802, 6)\nMain features and transormations:\n\n\n\n\nVariable\nDescription\n\n\n\n\nsession_key\nIdentifies the race session\n\n\ndriver_number\nUnique identifier for each driver\n\n\navg_lap\nAverage lap time for the driver in a race\n\n\nbest_lap\nFastest lap recorded by the driver\n\n\nconsistency\nStandard deviation of lap times\n\n\nposition\nFinal finishing position\n\n\n\n\nCausions: A key limitation of this dataset is that lap times vary significantly between circuits. Tracks differ in:\ncircuit length\nnumber of corners\ntrack layout\nelevation changes\naccidents Because of these differences, raw lap times are not directly comparable across races. In more advanced analyses, lap times are often normalized relative to the fastest lap in each race. For simplicity, this exploratory analysis uses raw lap times while acknowledging this limitation.\n\n\n\n\nAfter a few more lines of code, we can examine whether lap time consistency correlates with finishing position.\n\nSimilarly, we can examine the relationship between best lap time and finishing position.\n\nThese plots provide a simple way to explore whether raw pace or lap consistency better predicts race performance.\n\n\n\nThis analysis represents a simple exploratory study. Several improvements could be made in future work, such as, incorporating tire strategy and pit stops, investigating weather effects, and compare driver performance across teams. OpenF1 provides many additional endpoints that could support more sophisticated analyses.\n\n\n\nYou can perform your own analysis on OpenF1 datasets! Check out OpenF1 API endpoints for documentation.\nThe complete code used in this analysis can be found on (Github repo)[https://github.com/Vaoikun/Data_Acquisition_Blog]."
+  },
+  {
+    "objectID": "data_acq.html#conclusion",
+    "href": "data_acq.html#conclusion",
+    "title": "Open F1 Data Acquisition",
+    "section": "",
+    "text": "Open telemetry datasets such as OpenF1 provide a valuable opportunity to explore motorsport performance data using modern data science tools. Even simple statistical measures such as lap consistency and best lap time can reveal meaningful insights about driver performance.\nAs Formula 1 continues to expand its data availability, opportunities for deeper analytics will only grow."
+  },
+  {
+    "objectID": "projects/final-project.html",
+    "href": "projects/final-project.html",
+    "title": "Final Project",
+    "section": "",
+    "text": "This is coming down the pipeline. Check again later.",
+    "crumbs": [
+      "Final Project"
+    ]
+  },
+  {
+    "objectID": "projects/data-acquisition.html",
+    "href": "projects/data-acquisition.html",
+    "title": "Data Acquisition Project",
+    "section": "",
+    "text": "This is coming down the pipeline. Check again later.",
+    "crumbs": [
+      "Data Acquisition Project"
+    ]
+  },
+  {
+    "objectID": "projects/eda.html",
+    "href": "projects/eda.html",
+    "title": "EDA Project",
+    "section": "",
+    "text": "This is coming down the pipeline. Check again later.",
+    "crumbs": [
+      "EDA Project"
+    ]
   },
   {
     "objectID": "projects/index.html",
@@ -87,36 +159,6 @@
     "text": "Description: Pick a dataset and explore it to discover insights and answer questions.\n\n\n\nDescription: Find an interesting data source, collect the data, and prepare it for analysis.\n\n\n\nDescription: A comprehensive project that shows off my data science skills.",
     "crumbs": [
       "Projects Overview"
-    ]
-  },
-  {
-    "objectID": "projects/eda.html",
-    "href": "projects/eda.html",
-    "title": "EDA Project",
-    "section": "",
-    "text": "This is coming down the pipeline. Check again later.",
-    "crumbs": [
-      "EDA Project"
-    ]
-  },
-  {
-    "objectID": "projects/data-acquisition.html",
-    "href": "projects/data-acquisition.html",
-    "title": "Data Acquisition Project",
-    "section": "",
-    "text": "This is coming down the pipeline. Check again later.",
-    "crumbs": [
-      "Data Acquisition Project"
-    ]
-  },
-  {
-    "objectID": "projects/final-project.html",
-    "href": "projects/final-project.html",
-    "title": "Final Project",
-    "section": "",
-    "text": "This is coming down the pipeline. Check again later.",
-    "crumbs": [
-      "Final Project"
     ]
   },
   {

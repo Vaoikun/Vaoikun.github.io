@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Tutorial – Your Name - Data Science Portfolio</title>
+<title>Naïve Bayes Tutorial – Your Name - Data Science Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -220,17 +220,17 @@ window.Quarto = {
   <ul>
   <li><a href="#naive-bayes-classifiers-tutorial" id="toc-naive-bayes-classifiers-tutorial" class="nav-link active" data-scroll-target="#naive-bayes-classifiers-tutorial">Naive Bayes Classifiers Tutorial</a>
   <ul class="collapse">
-  <li><a href="#headline" id="toc-headline" class="nav-link" data-scroll-target="#headline">Headline　</a></li>
+  <li><a href="#what-is-naïve-bayes-classifiers" id="toc-what-is-naïve-bayes-classifiers" class="nav-link" data-scroll-target="#what-is-naïve-bayes-classifiers">What is Naïve Bayes Classifiers?</a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a>
   <ul class="collapse">
   <li><a href="#how-does-it-work" id="toc-how-does-it-work" class="nav-link" data-scroll-target="#how-does-it-work">How does it work?</a></li>
   <li><a href="#spam-problem" id="toc-spam-problem" class="nav-link" data-scroll-target="#spam-problem">Spam Problem</a></li>
   </ul></li>
-  <li><a href="#body" id="toc-body" class="nav-link" data-scroll-target="#body">Body</a>
+  <li><a href="#walkthorugh" id="toc-walkthorugh" class="nav-link" data-scroll-target="#walkthorugh">Walkthorugh</a>
   <ul class="collapse">
   <li><a href="#naive-bayes-class" id="toc-naive-bayes-class" class="nav-link" data-scroll-target="#naive-bayes-class">Naive Bayes Class</a></li>
   </ul></li>
-  <li><a href="#cta" id="toc-cta" class="nav-link" data-scroll-target="#cta">CTA</a></li>
+  <li><a href="#thank-you-for-reading" id="toc-thank-you-for-reading" class="nav-link" data-scroll-target="#thank-you-for-reading">Thank You for Reading!</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -240,7 +240,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Tutorial</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title">Naïve Bayes Tutorial</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -260,8 +260,8 @@ window.Quarto = {
 <p><a href="https://vaoikun.github.io/">Home</a> <img src="Spam.jpeg" alt="Description" width="150" style="float:right; margin-left:12px;"></p>
 <section id="naive-bayes-classifiers-tutorial" class="level1">
 <h1>Naive Bayes Classifiers Tutorial</h1>
-<section id="headline" class="level2">
-<h2 class="anchored" data-anchor-id="headline">Headline　</h2>
+<section id="what-is-naïve-bayes-classifiers" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-naïve-bayes-classifiers">What is Naïve Bayes Classifiers?</h2>
 <p>Naïve Bayes classifiers are a family of machine learning classification methods that use Bayes’ theorem to probabilistically categorize data.<br>
 They are called naïve because they assume independence between the features. The main idea is to use Bayes’ theorem to determine the probability that a certain data point belongs in a certain class, given the features of that data. Despite what the name may suggest, the naïve Bayes classifier is not a Bayesian method, as it is based on likelihood rather than Bayesian inference.</p>
 </section>
@@ -319,8 +319,8 @@ P(C = k \mid \mathbf{x}) = \frac{P(C = k)\,P(\mathbf{x} \mid C = k)}{P(\mathbf{x
 <hr>
 </section>
 </section>
-<section id="body" class="level2">
-<h2 class="anchored" data-anchor-id="body">Body</h2>
+<section id="walkthorugh" class="level2">
+<h2 class="anchored" data-anchor-id="walkthorugh">Walkthorugh</h2>
 <section id="naive-bayes-class" class="level3">
 <h3 class="anchored" data-anchor-id="naive-bayes-class">Naive Bayes Class</h3>
 <p>We first create a Python class called <code>NaiveBayesFilter</code> with a constructor:</p>
@@ -447,12 +447,12 @@ P(C = k) \Pi^n_{i=1} P(x_i \mid C=k)
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Spam correctly identified:"</span>, spam_correct)</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Ham incorrectly identified:"</span>, ham_incorrect)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This will yield,</p>
-<pre><code>Spam correctly identified: np.float64(0.9513513513513514)
-Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Spam correctly identified: np.float64(<span class="fl">0.9513513513513514</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Ham incorrectly identified: np.float64(<span class="fl">0.012417218543046357</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="cta" class="level2">
-<h2 class="anchored" data-anchor-id="cta">CTA</h2>
+<section id="thank-you-for-reading" class="level2">
+<h2 class="anchored" data-anchor-id="thank-you-for-reading">Thank You for Reading!</h2>
 <p>While naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.</p>
 <p>This is just one of many implementations of the naïve Bayes Classifier. Try implementing your own naïve Bayes Classifier in your machine and try using a different dataset! You can find similar datasets in websites like <a href="https://archive.ics.uci.edu/dataset/228/sms+spam+collection">UCI Machine Learning Repository</a> and <a href="https://ieee-dataport.org/documents/sms-spam-dataset">IEEE DataPort</a> for free.</p>
 
@@ -915,7 +915,7 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Tutorial"</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Naïve Bayes Tutorial"</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -924,7 +924,7 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu"># Naive Bayes Classifiers Tutorial</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Headline　 </span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## What is Naïve Bayes Classifiers?</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>Naïve Bayes classifiers are a family of machine learning classification methods that use Bayes’ theorem to probabilistically categorize data.  </span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>They are called naïve because they assume independence between the features. The main idea is to use Bayes’ theorem to determine the probability that a certain data point belongs in a certain class, given the features of that data. Despite what the name may suggest, the naïve Bayes classifier is not a Bayesian method, as it is based on likelihood rather than Bayesian inference.</span>
@@ -976,7 +976,7 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
 <span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## Body</span></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## Walkthorugh</span></span>
 <span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a><span class="fu">### Naive Bayes Class</span></span>
 <span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a></span>
@@ -1138,12 +1138,12 @@ Ham incorrectly identified: np.float64(0.012417218543046357)</code></pre>
 <span id="cb9-222"><a href="#cb9-222" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-223"><a href="#cb9-223" aria-hidden="true" tabindex="-1"></a>This will yield,</span>
 <span id="cb9-224"><a href="#cb9-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-225"><a href="#cb9-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb9-226"><a href="#cb9-226" aria-hidden="true" tabindex="-1"></a><span class="in">Spam correctly identified: np.float64(0.9513513513513514)</span></span>
-<span id="cb9-227"><a href="#cb9-227" aria-hidden="true" tabindex="-1"></a><span class="in">Ham incorrectly identified: np.float64(0.012417218543046357)</span></span>
+<span id="cb9-225"><a href="#cb9-225" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb9-226"><a href="#cb9-226" aria-hidden="true" tabindex="-1"></a>Spam correctly identified: np.float64(<span class="fl">0.9513513513513514</span>)</span>
+<span id="cb9-227"><a href="#cb9-227" aria-hidden="true" tabindex="-1"></a>Ham incorrectly identified: np.float64(<span class="fl">0.012417218543046357</span>)</span>
 <span id="cb9-228"><a href="#cb9-228" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb9-229"><a href="#cb9-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-230"><a href="#cb9-230" aria-hidden="true" tabindex="-1"></a><span class="fu">## CTA</span></span>
+<span id="cb9-230"><a href="#cb9-230" aria-hidden="true" tabindex="-1"></a><span class="fu">## Thank You for Reading!</span></span>
 <span id="cb9-231"><a href="#cb9-231" aria-hidden="true" tabindex="-1"></a>While naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.</span>
 <span id="cb9-232"><a href="#cb9-232" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-233"><a href="#cb9-233" aria-hidden="true" tabindex="-1"></a>This is just one of many implementations of the naïve Bayes Classifier. Try implementing your own naïve Bayes Classifier in your machine and try using a different dataset!</span>
