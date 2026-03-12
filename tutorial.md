@@ -1,5 +1,5 @@
 ---
-title: "Tutorial"
+title: "Naïve Bayes Tutorial"
 ---
 
 
@@ -8,7 +8,7 @@ title: "Tutorial"
 
 # Naive Bayes Classifiers Tutorial
 
-## Headline　 
+## What is Naïve Bayes Classifiers?
 
 Naïve Bayes classifiers are a family of machine learning classification methods that use Bayes’ theorem to probabilistically categorize data.  
 They are called naïve because they assume independence between the features. The main idea is to use Bayes’ theorem to determine the probability that a certain data point belongs in a certain class, given the features of that data. Despite what the name may suggest, the naïve Bayes classifier is not a Bayesian method, as it is based on likelihood rather than Bayesian inference.
@@ -60,7 +60,7 @@ Data is expected to look something like,
 
 ---
 
-## Body
+## Walkthorugh
 
 ### Naive Bayes Class
 
@@ -227,7 +227,7 @@ Spam correctly identified: np.float64(0.9513513513513514)
 Ham incorrectly identified: np.float64(0.012417218543046357)
 ```
 
-## CTA
+## Thank You for Reading!
 While naïve Bayes classifiers are most easily seen as applicable in cases where the features have, ostensibly, well-defined probability distributions, they are applicable in many other cases. In this tutorial, we will apply them to the problem of spam filtering. While it is generally a bad idea to assume independence, naïve Bayes classifiers can still be very effective, even when we are confident that features are not independent.
 
 This is just one of many implementations of the naïve Bayes Classifier. Try implementing your own naïve Bayes Classifier in your machine and try using a different dataset!
