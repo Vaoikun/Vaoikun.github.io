@@ -50,6 +50,8 @@ df.head()
 
 Now you are ready to perform EDA on OpenF1 datasets! Check out [OpenF1 API endpoints](https://openf1.org/docs/#api-endpoints) for more datasets to explore!
 
+For our EDA, we merge and stack Sessions result and Laps datasets across 30 sessions in 2023 season. We will also add 
+
 ## Overview on Laps datasets and Session result datasets
 
 Here's the quick overview for our Laps and Session result datasets. We will use ```7782``` as our session_key for simplicity. 
