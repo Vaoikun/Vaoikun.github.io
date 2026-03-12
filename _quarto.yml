@@ -16,7 +16,7 @@ website:
       - text: "Tutorial"
         href: tutorial.md
       - text: "Data Acquisition"
-        href: data-acquisition.qmd
+        href: data-acquisition.md
       - text: "Projects"
         menu:
           - text: "All Projects"
