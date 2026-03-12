@@ -39,7 +39,7 @@ website:
       contents:
         - projects/index.md
         - projects/eda.qmd
-        - projects/data-acquisition.md
+        - projects/data-acquisition.qmd
         - projects/final-project.qmd
 
 format:
